@@ -314,7 +314,7 @@ footer span{color:var(--accent)}
 /* =================== END FINANCE DESK SIDEBAR =================== */
 
 /* intro loader — calculating */
-#loader{position:fixed;inset:0;z-index:9999;background:var(--bg);display:grid;place-items:center;transition:opacity .7s ease,visibility .7s ease}
+#loader{position:fixed;inset:0;z-index:9999;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding-top:18vh;transition:opacity .7s ease,visibility .7s ease}
 @keyframes logoRise{0%{opacity:0;transform:translateY(50px) scale(.7)}60%{opacity:1}100%{opacity:1;transform:translateY(0) scale(1)}}
 @keyframes barRiseL{0%{transform:scaleY(0);transform-origin:bottom}100%{transform:scaleY(1);transform-origin:bottom}}
 @keyframes barRiseR{0%{transform:scaleY(0);transform-origin:bottom}100%{transform:scaleY(1);transform-origin:bottom}}
@@ -343,7 +343,7 @@ footer span{color:var(--accent)}
 .llogo-glow{position:absolute;inset:-20px;border-radius:50%;background:radial-gradient(circle,rgba(201,169,110,.25) 0%,transparent 70%);animation:glowPulse 2.5s ease-in-out 1s infinite;pointer-events:none}
 .lquote{text-align:center;animation:quoteFade .8s ease .9s both}
 #loader-quote-text{font-family:"Space Grotesk",sans-serif;font-size:clamp(13px,2vw,16px);color:rgba(255,255,255,.5);font-style:italic;text-align:center;max-width:500px;line-height:1.7;margin-bottom:8px}#loader-quote-auth{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--accent);letter-spacing:.08em}#loader.done{opacity:0;visibility:hidden;pointer-events:none}
-#loader .lwrap{display:flex;flex-direction:column;align-items:center;gap:18px;font-family:'IBM Plex Mono',monospace}
+#loader .lwrap{display:flex;flex-direction:column;align-items:center;gap:18px;font-family:'IBM Plex Mono',monospace;width:100%}
 #loader .lpct{display:flex;align-items:flex-start;gap:4px;line-height:1}
 #loader #lnum{font-size:clamp(46px,13vw,78px);font-weight:600;color:#fff;background:linear-gradient(135deg,#fff,var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;min-width:3ch;text-align:right;font-variant-numeric:tabular-nums}
 #loader .lpc{font-size:20px;color:var(--accent);margin-top:8px}
@@ -371,7 +371,7 @@ footer span{color:var(--accent)}
   <div class="lwrap">
     <!-- Rising H logo — 25% larger: 72→90px -->
     <div class="llogo">
-      <svg class="llogo-svg" viewBox="0 0 64 64" width="90" height="90" aria-hidden="true">
+      <svg class="llogo-svg" viewBox="0 0 64 64" width="135" height="135" aria-hidden="true">
         <defs>
           <linearGradient id="lgGrad" x1="0" y1="1" x2="0" y2="0">
             <stop offset="0" stop-color="#C9A96E"/>
