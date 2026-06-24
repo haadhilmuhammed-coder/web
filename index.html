@@ -1388,7 +1388,7 @@ footer span{color:var(--accent)}
     function rnd(n){return Math.floor(Math.random()*n);}
     function fmt(n){return n.toLocaleString('en-US');}
     function expr(){var a=fmt(rnd(9000)+500),b=fmt(rnd(900)+20),o=ops[rnd(ops.length)];return a+' <b>'+o+'</b> '+b;}
-    var dur=3000,t0=performance.now(),lastSwap=0;
+    var dur=2000,t0=performance.now(),lastSwap=0;
     function frame(now){
       var p=Math.min(1,(now-t0)/dur);
       var pct=Math.round(p*100);
