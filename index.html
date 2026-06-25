@@ -267,10 +267,11 @@ footer span{color:var(--accent)}
 
 /* ===================== FINANCE DESK SIDEBAR ===================== */
 .finance-desk{
-  --fbg:#08080A;--fglass:rgba(22,22,27,.62);--fglass2:rgba(30,30,36,.55);
-  --fline:rgba(255,255,255,.08);--fline2:rgba(255,255,255,.14);
-  --ftext:#F4F4F6;--fmuted:#8B8B94;--fpos:#34D399;--fneg:#FB7185;
-  --fradius:18px;--fshadow:0 18px 50px rgba(0,0,0,.55);
+  --fbg:#05050A;--fglass:rgba(10,10,16,.82);--fglass2:rgba(16,16,24,.72);
+  --fline:rgba(255,255,255,.07);--fline2:rgba(201,169,110,.22);
+  --ftext:#F0F0F4;--fmuted:#707080;--fpos:#34D399;--fneg:#FB7185;
+  --fcyan:#00D4FF;--fgold:#C9A96E;--fgold2:#E8C98A;
+  --fradius:16px;--fshadow:0 24px 60px rgba(0,0,0,.7);
   --fmono:'IBM Plex Mono',ui-monospace,monospace;--fsans:'Inter',system-ui,sans-serif;
 }
 .finance-desk .fis{position:fixed;top:0;right:0;height:100vh;width:368px;z-index:1000;display:flex;flex-direction:column;background:linear-gradient(180deg,rgba(14,14,18,.9),rgba(8,8,10,.94));backdrop-filter:blur(22px) saturate(140%);-webkit-backdrop-filter:blur(22px) saturate(140%);border-left:1px solid var(--fline);box-shadow:-20px 0 60px rgba(0,0,0,.5);transition:transform .45s cubic-bezier(.22,.8,.18,1);font-family:var(--fsans)}
@@ -356,6 +357,61 @@ footer span{color:var(--accent)}
 
 @media(prefers-reduced-motion:reduce){.finance-desk .ticker__track,.finance-desk .fis__dot,.finance-desk .sk::after{animation:none}}
 /* =================== END FINANCE DESK SIDEBAR =================== */
+/* ── Futuristic upgrades ───────────────────────────────────────────── */
+.finance-desk .fis{background:linear-gradient(180deg,rgba(8,8,14,.96) 0%,rgba(5,5,10,.98) 100%);border-left:1px solid rgba(201,169,110,.18);box-shadow:-1px 0 0 rgba(201,169,110,.1),-20px 0 80px rgba(0,0,0,.8),-40px 0 120px rgba(0,0,0,.4),inset -1px 0 40px rgba(201,169,110,.03)}
+.finance-desk .fis__head{background:rgba(5,5,10,.98);border-bottom:1px solid rgba(201,169,110,.12);position:relative}
+.finance-desk .fis__head::after{content:"";position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(201,169,110,.3),rgba(0,212,255,.15),transparent)}
+.finance-desk .fis__brand h2{background:linear-gradient(90deg,var(--fgold),var(--fgold2));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;font-size:15px;font-weight:700;letter-spacing:.04em}
+.finance-desk .fis__brand span{color:var(--fcyan);opacity:.7;letter-spacing:.18em}
+.finance-desk .fis__dot{background:var(--fpos);box-shadow:0 0 0 3px rgba(52,211,153,.15),0 0 12px rgba(52,211,153,.5)}
+.finance-desk .fcard{background:linear-gradient(135deg,rgba(14,14,22,.9),rgba(8,8,14,.95));border:1px solid rgba(255,255,255,.06);border-radius:14px;transition:border-color .3s,transform .3s,box-shadow .3s}
+.finance-desk .fcard:hover{border-color:rgba(201,169,110,.25);transform:translateY(-2px);box-shadow:0 12px 40px rgba(0,0,0,.5),0 0 20px rgba(201,169,110,.08)}
+.finance-desk .fcard::before{content:"";position:absolute;inset:0;border-radius:14px;background:linear-gradient(135deg,rgba(201,169,110,.04),transparent 50%,rgba(0,212,255,.02));pointer-events:none}
+.finance-desk .sec-label h3{font-size:11px;letter-spacing:.16em;color:var(--fgold);opacity:.9}
+.finance-desk .sec-label h3 .fic{background:rgba(201,169,110,.08);border:1px solid rgba(201,169,110,.18);border-radius:8px}
+.finance-desk .sec-label h3 .fic svg{stroke:var(--fgold);opacity:.9}
+.finance-desk .ftag{background:rgba(0,212,255,.06);border:1px solid rgba(0,212,255,.18);color:var(--fcyan);font-size:9px;letter-spacing:.14em;padding:3px 8px;border-radius:20px}
+/* Market cells */
+.finance-desk .m{background:rgba(8,8,14,.9);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:12px 10px;transition:border-color .3s,box-shadow .3s;position:relative;overflow:hidden}
+.finance-desk .m:hover{border-color:rgba(201,169,110,.2);box-shadow:0 0 20px rgba(201,169,110,.07)}
+.finance-desk .m .val{font-size:15px;font-weight:700;color:var(--fgold2);text-shadow:0 0 12px rgba(201,169,110,.35)}
+.finance-desk .m .name{font-size:9px;color:var(--fcyan);opacity:.65;letter-spacing:.12em;margin-bottom:6px}
+.finance-desk .m .chg{font-size:10px;margin-top:4px}
+/* Sparklines */
+.spark-wrap{margin-top:8px;height:32px;position:relative}
+.spark-wrap canvas{width:100%;height:32px;display:block;opacity:.8}
+/* News */
+.finance-desk .news{background:rgba(10,10,18,.85);border:1px solid rgba(255,255,255,.05);border-radius:11px;padding:10px 12px;transition:border-color .2s,background .2s}
+.finance-desk .news:hover{border-color:rgba(201,169,110,.2);background:rgba(20,20,30,.7)}
+.finance-desk .news h4{color:var(--ftext);font-size:12px;line-height:1.38}
+.finance-desk .news .src{color:var(--fcyan);border-color:rgba(0,212,255,.18);font-size:9px;opacity:.8}
+/* AI section */
+.finance-desk .ai{background:linear-gradient(135deg,rgba(0,212,255,.04),rgba(201,169,110,.03));border-color:rgba(0,212,255,.1)!important}
+.finance-desk .ai li .b{background:linear-gradient(135deg,var(--fgold),var(--fgold2));color:#05050A;font-weight:700;border-radius:7px;font-size:10px}
+.finance-desk .ai li{font-size:12px;color:#C8C8D4;line-height:1.5}
+/* Scan line animation */
+@keyframes fisScan{0%{transform:translateY(-100%);opacity:0}20%{opacity:.4}80%{opacity:.4}100%{transform:translateY(100vh);opacity:0}}
+.finance-desk .ai::after{content:"";position:absolute;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(0,212,255,.5),transparent);animation:fisScan 6s ease-in-out infinite;pointer-events:none}
+/* Tip card */
+.finance-desk .tip{background:linear-gradient(135deg,rgba(201,169,110,.06),rgba(201,169,110,.02));border-color:rgba(201,169,110,.18)!important}
+.finance-desk .tip__ic{background:linear-gradient(135deg,var(--fgold),var(--fgold2));border-radius:12px}
+.finance-desk .tip__ic svg{stroke:#05050A}
+/* Ticker */
+.finance-desk .ticker{-webkit-mask-image:linear-gradient(180deg,transparent,#000 16%,#000 84%,transparent);mask-image:linear-gradient(180deg,transparent,#000 16%,#000 84%,transparent)}
+/* Actions */
+.finance-desk .act{background:rgba(12,12,20,.9);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:13px 12px;color:var(--ftext);font-size:12px;transition:border-color .25s,background .25s,transform .2s;display:flex;flex-direction:column;align-items:center;gap:8px;text-decoration:none}
+.finance-desk .act:hover{border-color:rgba(201,169,110,.3);background:rgba(201,169,110,.06);transform:translateY(-2px);color:var(--fgold2)}
+.finance-desk .act:hover svg{stroke:var(--fgold2)}
+/* Scrollbar override */
+.finance-desk .fis__scroll::-webkit-scrollbar{width:4px}
+.finance-desk .fis__scroll::-webkit-scrollbar-track{background:transparent}
+.finance-desk .fis__scroll::-webkit-scrollbar-thumb{background:rgba(201,169,110,.25);border-radius:4px}
+/* System status strip */
+.fis-sysbar{display:flex;align-items:center;gap:8px;padding:7px 20px;background:rgba(0,212,255,.03);border-bottom:1px solid rgba(0,212,255,.08);font-family:var(--fmono);font-size:9px;color:var(--fcyan);opacity:.8;letter-spacing:.12em;text-transform:uppercase;flex-wrap:wrap;gap:12px}
+.fis-sysbar span{display:flex;align-items:center;gap:5px}
+.fis-sysbar .dot{width:5px;height:5px;border-radius:50%;background:var(--fpos);box-shadow:0 0 6px rgba(52,211,153,.7)}
+.fis-sysbar .dot.cy{background:var(--fcyan);box-shadow:0 0 6px rgba(0,212,255,.7)}
+/* ── END Futuristic upgrades ──────────────────────────────────────── */
 
 /* intro loader — calculating */
 #loader{position:fixed;inset:0;z-index:9999;background:#050508;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .8s ease,visibility .8s ease}
@@ -1179,6 +1235,12 @@ body.cur-c #cur-ring{
         <button class="fis__close" id="fisClose" aria-label="Close panel">×</button>
       </div>
     </div>
+    <div class="fis-sysbar">
+      <span><i class="dot"></i>Feed Active</span>
+      <span><i class="dot cy"></i>FX Live</span>
+      <span><i class="dot cy"></i>AI Sync</span>
+      <span id="sysNodeId" style="margin-left:auto;opacity:.5">NODE-AED-01</span>
+    </div>
     <div class="fis__scroll">
       <div class="fcard">
         <div class="sec-label"><h3><span class="fic"><svg viewBox="0 0 24 24"><path d="M4 5h16v14H4z"/><path d="M8 9h8M8 13h8M8 17h5"/></svg></span>Latest Finance News</h3><span class="ftag" id="newsStatus">Loading</span></div>
@@ -1227,8 +1289,27 @@ body.cur-c #cur-ring{
   function renderNews(items){$('newsStatus').textContent='Live';var card=function(it){return '<div class="news"><h4>'+it.h+'</h4><div class="meta"><span>'+it.d+'</span><span class="src">'+it.s+'</span></div></div>';};$('newsTrack').innerHTML=items.map(card).join('')+items.map(card).join('');}
   var TIPS=[['Reconciliation','Reconcile bank statements before month-end close so timing differences surface early, not in the audit.'],['VAT','Keep VAT input and output records for at least 5 years — the FTA can request them within that window.'],['Procurement','Run a 3-way match (PO, goods-received note, invoice) before approving any supplier payment.'],['Receivables','Review aged receivables weekly and chase anything past 30 days to protect cash flow.'],['Accruals','Post accruals for goods received but not yet invoiced, or you understate expenses for the period.'],['Tax','Track deductible vs non-deductible expenses through the year — it makes corporate tax filing painless.'],['Controls','A trial balance must balance before you finalise: debits always equal credits.'],['Procurement','For purchases above your threshold, get three quotes so pricing is always defensible.'],['Provisions','Reconcile the EOSB / gratuity provision monthly so year-end holds no surprises.'],['VAT','File and pay VAT before the 28th to avoid FTA late-filing and late-payment penalties.'],['Assets','Maintain a fixed-asset register and verify assets physically at least once a year.'],['Audit','Keep a standard month-end checklist — consistency is what prevents missed entries.'],['Cash','Forecast cash 13 weeks out; it catches shortfalls while you can still act on them.'],['Payables','Match every credit note to its original invoice before adjusting the payables ledger.']];
   function renderTip(){var t=TIPS[dayIndex()%TIPS.length];$('tipCat').textContent=t[0];$('tipText').textContent=t[1];$('tipDate').textContent=new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'short'});}
+  /* Sparkline generator */
+  var sparkHistory={};
+  function seedHistory(k,val){if(sparkHistory[k])return;var a=[];for(var i=0;i<24;i++){var d=(Math.random()-.48)*.004*val;a.push(+(val*(1+d*(i/24))).toFixed(6));}sparkHistory[k]=a;}
+  function drawSpark(canvasId,data,up){var c=document.getElementById(canvasId);if(!c)return;var ctx=c.getContext('2d');var W=c.width=c.offsetWidth||160,H=c.height=32;ctx.clearRect(0,0,W,H);var mn=Math.min.apply(null,data),mx=Math.max.apply(null,data),rng=mx-mn||1;var pts=data.map(function(v,i){return[i/(data.length-1)*W,(1-(v-mn)/rng)*(H-4)+2];});var grad=ctx.createLinearGradient(0,0,0,H);var col=up?'rgba(52,211,153,.55)':'rgba(251,113,133,.55)';var col2=up?'rgba(52,211,153,.0)':'rgba(251,113,133,.0)';grad.addColorStop(0,col);grad.addColorStop(1,col2);ctx.beginPath();ctx.moveTo(pts[0][0],H);pts.forEach(function(p){ctx.lineTo(p[0],p[1]);});ctx.lineTo(pts[pts.length-1][0],H);ctx.closePath();ctx.fillStyle=grad;ctx.fill();ctx.beginPath();ctx.moveTo(pts[0][0],pts[0][1]);pts.forEach(function(p){ctx.lineTo(p[0],p[1]);});ctx.strokeStyle=up?'rgba(52,211,153,.9)':'rgba(251,113,133,.9)';ctx.lineWidth=1.5;ctx.stroke();}
+  function refreshSparks(){Object.keys(MKT).forEach(function(k){var o=MKT[k];seedHistory(k,o.val);sparkHistory[k].push(o.val);if(sparkHistory[k].length>24)sparkHistory[k].shift();drawSpark('sp_'+k,sparkHistory[k],o.chg>=0);});}
   var MKT={aed:{name:'USD / AED',val:3.6725,chg:0.00,dec:4,pre:''},inr:{name:'AED / INR',val:23.12,chg:0.00,dec:2,pre:''},eur:{name:'EUR / USD',val:1.0842,chg:0.18,dec:4,pre:''}};
-  function renderMarket(){var cell=function(k,o,full){return '<div class="m '+(full?'full':'')+'"><div class="'+(full?'full-row':'')+'"><div><div class="name">'+o.name+'</div><div class="val" id="v_'+k+'">'+o.pre+fmt(o.val,o.dec)+'</div></div>'+(full?'<div class="chg '+(o.chg>=0?'up':'down')+'"><span class="arrow '+(o.chg>=0?'u':'d')+'"></span>'+(o.chg>=0?'+':'')+fmt(o.chg,2)+'%</div>':'')+'</div>'+(full?'':'<div class="chg '+(o.chg>=0?'up':'down')+'"><span class="arrow '+(o.chg>=0?'u':'d')+'"></span>'+(o.chg>=0?'+':'')+fmt(o.chg,2)+'%</div>')+'</div>';};$('market').innerHTML=cell('aed',MKT.aed)+cell('inr',MKT.inr)+cell('eur',MKT.eur);Object.keys(MKT).forEach(function(k){var el=$('v_'+k);if(el)el.dataset.v=MKT[k].val;});$('mktStatus').textContent=CFG.forexUrl?'Live':'Demo';}
+  function renderMarket(){
+    var cell=function(k,o){
+      var up=o.chg>=0;
+      return '<div class="m">'+
+        '<div class="name">'+o.name+'</div>'+
+        '<div class="val" id="v_'+k+'">'+o.pre+fmt(o.val,o.dec)+'</div>'+
+        '<div class="chg '+(up?'up':'down')+'"><span class="arrow '+(up?'u':'d')+'"></span>'+(up?'+':'')+fmt(o.chg,2)+'%</div>'+
+        '<div class="spark-wrap"><canvas id="sp_'+k+'" height="32"></canvas></div>'+
+      '</div>';
+    };
+    $('market').innerHTML=cell('aed',MKT.aed)+cell('inr',MKT.inr)+cell('eur',MKT.eur);
+    Object.keys(MKT).forEach(function(k){var el=$('v_'+k);if(el)el.dataset.v=MKT[k].val;});
+    $('mktStatus').textContent=CFG.forexUrl?'Live':'Demo';
+    setTimeout(refreshSparks,60);
+  }
   function fetchForex(){return fetch(CFG.forexUrl).then(function(r){return r.json();}).then(function(j){if(j&&j.rates){var aed=j.rates.AED||3.6725,eur=1/(j.rates.EUR||0.922),inr=j.rates.INR?(j.rates.INR/aed):23.12;MKT.aed.chg=+((aed-MKT.aed.val)/MKT.aed.val*100).toFixed(2);MKT.aed.val=aed;MKT.eur.chg=+((eur-MKT.eur.val)/MKT.eur.val*100).toFixed(2);MKT.eur.val=eur;MKT.inr.chg=+((inr-MKT.inr.val)/MKT.inr.val*100).toFixed(2);MKT.inr.val=inr;}}).catch(function(){});}
   function driftDemo(){/* no volatile assets */}
   function refreshMarket(){driftDemo();fetchForex().then(function(){Object.keys(MKT).forEach(function(k){var el=$('v_'+k);if(el)animateNum(el,MKT[k].val,MKT[k].dec,MKT[k].pre);});renderMarket();});}
@@ -1241,7 +1322,7 @@ body.cur-c #cur-ring{
   scrim.addEventListener('click',function(){fis.classList.remove('open');scrim.classList.remove('show');});
   wireActions();renderTip();renderAI();renderMarket();
   var news=DEMO_NEWS;setTimeout(function(){renderNews(news);},500);
-  refreshMarket();setInterval(refreshMarket,CFG.refreshMs);
+  refreshMarket();setInterval(function(){refreshMarket();setTimeout(refreshSparks,80);},CFG.refreshMs);
 })();
 </script>
 <script>
@@ -1514,7 +1595,7 @@ function closeExperience(){
       <button class="eclose" onclick="closeExperience()" aria-label="Close">&#x2715;</button>
     </div>
     <div class="em-body">
-      <iframe src="experience.html" id="expFrame" title="Professional Experience"></iframe>
+      <iframe src="View%20Experience.html" id="expFrame" title="Professional Experience"></iframe>
     </div>
   </div>
 </div>
