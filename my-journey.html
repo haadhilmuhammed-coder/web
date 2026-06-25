@@ -198,6 +198,26 @@ footer{text-align:center;padding:28px 24px;border-top:1px solid var(--line);
 .il-quote .hi{color:var(--gold2);font-style:italic}
 @media(prefers-reduced-motion:reduce){.interlude .il-inner{opacity:1;transform:none}}
 </style>
+<style>
+
+/* ══ GOLD DOT CURSOR ════════════════════════════════════════ */
+html{cursor:url("data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7") 0 0,none}
+*{cursor:inherit}
+#cur-dot{position:fixed;top:0;left:0;z-index:99999;pointer-events:none;width:8px;height:8px;border-radius:50%;background:#E8C98A;box-shadow:0 0 8px 2px rgba(201,169,110,.9),0 0 20px 4px rgba(201,169,110,.45),0 0 40px 8px rgba(201,169,110,.15);transform:translate(-50%,-50%);transition:width .15s,height .15s,box-shadow .15s;will-change:transform}
+#cur-ring{position:fixed;top:0;left:0;z-index:99998;pointer-events:none;width:36px;height:36px;border-radius:50%;border:1px solid rgba(201,169,110,.5);box-shadow:0 0 10px rgba(201,169,110,.2),inset 0 0 10px rgba(201,169,110,.05);transform:translate(-50%,-50%) scale(0);transition:transform .3s cubic-bezier(.22,1,.36,1),opacity .3s,border-color .2s,box-shadow .2s;opacity:0;will-change:transform}
+body.cur-h #cur-ring{transform:translate(-50%,-50%) scale(1);opacity:1;border-color:rgba(201,169,110,.8);box-shadow:0 0 14px rgba(201,169,110,.4),inset 0 0 14px rgba(201,169,110,.08)}
+body.cur-h #cur-dot{width:6px;height:6px;box-shadow:0 0 12px 4px rgba(201,169,110,1),0 0 28px 8px rgba(201,169,110,.5),0 0 50px 14px rgba(201,169,110,.2)}
+body.cur-c #cur-dot{width:5px;height:5px;background:#fff;box-shadow:0 0 10px 4px rgba(255,255,255,.9),0 0 24px 8px rgba(201,169,110,.8),0 0 50px 16px rgba(201,169,110,.4)}
+body.cur-c #cur-ring{transform:translate(-50%,-50%) scale(.55);opacity:1;border-width:2px;border-color:rgba(232,201,138,1);box-shadow:0 0 18px rgba(201,169,110,.7),inset 0 0 18px rgba(201,169,110,.15)}
+.cur-trail{position:fixed;top:0;left:0;z-index:99997;pointer-events:none;border-radius:50%;background:rgba(201,169,110,.55);transform:translate(-50%,-50%);animation:trailFade .5s ease forwards}
+@keyframes trailFade{0%{opacity:1;transform:translate(-50%,-50%) scale(1)}100%{opacity:0;transform:translate(-50%,-50%) scale(.1)}}
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:#05050A}
+::-webkit-scrollbar-thumb{background:#C9A96E;border-radius:3px}
+html{scrollbar-width:thin;scrollbar-color:#C9A96E #05050A}
+@media(max-width:768px){#cur-dot,#cur-ring{display:none}html,*{cursor:auto}}
+
+</style>
 </head>
 <body>
 <div id="bar"></div>
@@ -656,6 +676,44 @@ function clearAll() {
   });
   location.reload();
 }
+</script>
+
+<div id="cur-dot"></div>
+<div id="cur-ring"></div>
+
+<script>
+(function(){
+  var dot=document.getElementById('cur-dot');
+  var ring=document.getElementById('cur-ring');
+  if(!dot||!ring)return;
+  var mx=0,my=0,rx=0,ry=0,lastX=0,lastY=0;
+  document.addEventListener('mousemove',function(e){
+    mx=e.clientX;my=e.clientY;
+    dot.style.left=mx+'px';dot.style.top=my+'px';
+    var d=Math.hypot(mx-lastX,my-lastY);
+    if(d>22){
+      var t=document.createElement('div');
+      t.className='cur-trail';
+      var sz=(Math.random()*3+2)+'px';
+      t.style.cssText='width:'+sz+';height:'+sz+';left:'+mx+'px;top:'+my+'px;';
+      document.body.appendChild(t);
+      setTimeout(function(){if(t.parentNode)t.parentNode.removeChild(t);},500);
+      lastX=mx;lastY=my;
+    }
+  });
+  (function follow(){
+    rx+=(mx-rx)*.12;ry+=(my-ry)*.12;
+    ring.style.left=rx+'px';ring.style.top=ry+'px';
+    requestAnimationFrame(follow);
+  })();
+  var hov='a,button,input,textarea,select,[role="button"],.btn';
+  document.addEventListener('mouseover',function(e){if(e.target.closest(hov))document.body.classList.add('cur-h');});
+  document.addEventListener('mouseout',function(e){if(e.target.closest(hov))document.body.classList.remove('cur-h');});
+  document.addEventListener('mousedown',function(){document.body.classList.add('cur-c');});
+  document.addEventListener('mouseup',function(){document.body.classList.remove('cur-c');});
+  document.addEventListener('mouseleave',function(){dot.style.opacity='0';ring.style.opacity='0';});
+  document.addEventListener('mouseenter',function(){dot.style.opacity='1';});
+})();
 </script>
 </body>
 </html>
