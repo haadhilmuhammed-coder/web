@@ -358,87 +358,331 @@ footer span{color:var(--accent)}
 /* =================== END FINANCE DESK SIDEBAR =================== */
 
 /* intro loader — calculating */
-#loader{position:fixed;inset:0;z-index:9999;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding-top:18vh;transition:opacity .7s ease,visibility .7s ease}
-@keyframes logoRise{0%{opacity:0;transform:translateY(50px) scale(.7)}60%{opacity:1}100%{opacity:1;transform:translateY(0) scale(1)}}
+#loader{position:fixed;inset:0;z-index:9999;background:#050508;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .8s ease,visibility .8s ease}
+#loader.done{opacity:0;visibility:hidden;pointer-events:none}
+
+/* Radial glow bg */
+.l-glow-bg{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(201,169,110,.1) 0%,rgba(201,169,110,.04) 35%,transparent 70%);pointer-events:none;animation:glowPulse 3s ease-in-out infinite}
+
+/* Ambient bar chart */
+.l-bars-bg{position:absolute;inset:0;display:flex;align-items:flex-end;padding-bottom:0;pointer-events:none;overflow:hidden}
+.lb{position:absolute;bottom:0;width:3px;background:linear-gradient(to top,rgba(201,169,110,.18),rgba(201,169,110,.04));border-radius:2px 2px 0 0;animation:lbPulse 2.8s ease-in-out infinite}
+@keyframes lbPulse{0%,100%{opacity:.35;transform:scaleY(.85)}50%{opacity:.7;transform:scaleY(1)}}
+
+/* Wrapper */
+#loader .lwrap{display:flex;flex-direction:column;align-items:center;gap:0;position:relative;z-index:2}
+
+/* Ring */
+.lring-wrap{position:relative;width:300px;height:300px;display:flex;align-items:center;justify-content:center}
+.lring-svg{width:300px;height:300px;position:absolute;top:0;left:0}
+.lring-track{fill:none;stroke:rgba(201,169,110,.1);stroke-width:1.5}
+.lring-inner{fill:none;stroke:rgba(201,169,110,.07);stroke-width:.8;stroke-dasharray:4 10}
+.lring-ticks line{stroke:rgba(201,169,110,.4);stroke-width:2;stroke-linecap:round}
+.lring-fill{fill:none;stroke:url(#ringGrad);stroke-width:2;stroke-linecap:round;
+  stroke-dasharray:816.81;stroke-dashoffset:816.81;
+  transform-origin:150px 150px;transform:rotate(-90deg);
+  filter:drop-shadow(0 0 6px rgba(201,169,110,.7)) drop-shadow(0 0 14px rgba(201,169,110,.3));
+  transition:stroke-dashoffset .12s linear}
+.lring-tip{fill:#E8C98A;filter:drop-shadow(0 0 8px rgba(232,201,138,1)) drop-shadow(0 0 16px rgba(201,169,110,.8))}
+
+/* Logo inside ring */
+.llogo-glow{position:absolute;inset:-20px;border-radius:50%;background:radial-gradient(circle,rgba(201,169,110,.18) 0%,transparent 70%);animation:glowPulse 2.5s ease-in-out 1s infinite;pointer-events:none}
+
+/* H bars */
+.lbar-l{animation:barRiseL 1.4s cubic-bezier(.22,1,.36,1) .4s both}
+.lbar-r{animation:barRiseR 1.6s cubic-bezier(.22,1,.36,1) .2s both}
+.lbar-m{animation:barRiseM .8s ease 1.8s both}
+
+/* Counter */
+#loader .lpct{display:flex;align-items:flex-start;gap:4px;line-height:1;margin-top:18px}
+#loader #lnum{font-size:clamp(52px,10vw,80px);font-weight:700;color:#fff;background:linear-gradient(135deg,#fff,var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;min-width:3ch;text-align:right;font-variant-numeric:tabular-nums;font-family:'Space Grotesk',sans-serif;letter-spacing:-2px}
+#loader .lpc{font-size:22px;color:var(--accent);margin-top:10px;font-family:'Space Grotesk',sans-serif}
+
+/* Expressions */
+#loader .lexpr{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted);opacity:.6;letter-spacing:.08em;min-height:20px;margin-top:6px}
+
+/* Quote */
+.lquote{text-align:center;margin-top:22px;animation:quoteFade .9s ease .3s both}
+#loader-quote-text{font-family:'Space Grotesk',sans-serif;font-size:clamp(14px,2vw,16px);color:rgba(255,255,255,.72);font-style:italic;text-align:center;line-height:1.75;margin:0 auto 8px;display:block;text-shadow:0 0 30px rgba(201,169,110,.2)}
+#loader-quote-auth{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--accent2);letter-spacing:.12em;opacity:.8;display:block}
+
+/* Keyframes */
+@keyframes logoRise{0%{opacity:0;transform:translateY(40px) scale(.75)}60%{opacity:1}100%{opacity:1;transform:translateY(0) scale(1)}}
 @keyframes barRiseL{0%{transform:scaleY(0);transform-origin:bottom}100%{transform:scaleY(1);transform-origin:bottom}}
 @keyframes barRiseR{0%{transform:scaleY(0);transform-origin:bottom}100%{transform:scaleY(1);transform-origin:bottom}}
 @keyframes barRiseM{0%{opacity:0;transform:scaleX(0)}100%{opacity:1;transform:scaleX(1)}}
-@keyframes quoteFade{0%{opacity:0;transform:translateY(12px)}100%{opacity:1;transform:translateY(0)}}
-@keyframes glowPulse{0%,100%{opacity:.35;transform:scale(1)}50%{opacity:.7;transform:scale(1.35)}}
-.llogo{position:relative;display:flex;justify-content:center;margin-bottom:4px}
-.llogo-svg{animation:logoRise 3s cubic-bezier(.22,1,.36,1) forwards}
-.llogo-svg .lbar-l{animation:barRiseL 1.4s cubic-bezier(.22,1,.36,1) .4s both}
-.llogo-svg .lbar-r{animation:barRiseR 1.6s cubic-bezier(.22,1,.36,1) .2s both}
-.llogo-svg .lbar-m{animation:barRiseM .8s ease 1.8s both}
-.llogo-glow{position:absolute;inset:-24px;border-radius:50%;background:radial-gradient(circle,rgba(201,169,110,.22) 0%,transparent 70%);animation:glowPulse 2.5s ease-in-out 1s infinite;pointer-events:none}
-.lquote{text-align:center;animation:quoteFade .8s ease 3.1s both}
-/* Logo animations */
-@keyframes logoRise{0%{opacity:0;transform:translateY(50px) scale(.7)}60%{opacity:1}100%{opacity:1;transform:translateY(0) scale(1)}}
-@keyframes barRiseL{0%{transform:scaleY(0);transform-origin:bottom}100%{transform:scaleY(1);transform-origin:bottom}}
-@keyframes barRiseR{0%{transform:scaleY(0);transform-origin:bottom}100%{transform:scaleY(1);transform-origin:bottom}}
-@keyframes barRiseM{0%{opacity:0;transform:scaleX(0)}100%{opacity:1;transform:scaleX(1)}}
-@keyframes quoteFade{0%{opacity:0;transform:translateY(12px)}100%{opacity:1;transform:translateY(0)}}
-@keyframes glowPulse{0%,100%{opacity:.4;transform:scale(1)}50%{opacity:.8;transform:scale(1.3)}}
-.llogo{position:relative;margin-bottom:4px}
-.llogo-svg{animation:logoRise 3s cubic-bezier(.22,1,.36,1) forwards}
-.llogo-svg .lbar-l{animation:barRiseL 1.4s cubic-bezier(.22,1,.36,1) .4s both}
-.llogo-svg .lbar-r{animation:barRiseR 1.6s cubic-bezier(.22,1,.36,1) .2s both}
-.llogo-svg .lbar-m{animation:barRiseM .8s ease 1.8s both}
-.llogo-glow{position:absolute;inset:-20px;border-radius:50%;background:radial-gradient(circle,rgba(201,169,110,.25) 0%,transparent 70%);animation:glowPulse 2.5s ease-in-out 1s infinite;pointer-events:none}
-.lquote{text-align:center;animation:quoteFade .8s ease 3.1s both}
-#loader-quote-text{font-family:"Space Grotesk",sans-serif;font-size:clamp(13px,2vw,16px);color:rgba(255,255,255,.5);font-style:italic;text-align:center;max-width:500px;line-height:1.7;margin-bottom:8px}#loader-quote-auth{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--accent);letter-spacing:.08em}#loader.done{opacity:0;visibility:hidden;pointer-events:none}
-#loader .lwrap{display:flex;flex-direction:column;align-items:center;gap:18px;font-family:'IBM Plex Mono',monospace;width:100%}
-#loader .lpct{display:flex;align-items:flex-start;gap:4px;line-height:1}
-#loader #lnum{font-size:clamp(46px,13vw,78px);font-weight:600;color:#fff;background:linear-gradient(135deg,#fff,var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;min-width:3ch;text-align:right;font-variant-numeric:tabular-nums}
-#loader .lpc{font-size:20px;color:var(--accent);margin-top:8px}
-#loader .lexpr{font-size:13.5px;letter-spacing:.12em;color:var(--muted);min-height:18px;font-variant-numeric:tabular-nums}
-#loader .lexpr b{color:var(--accent);font-weight:500;margin:0 4px}
-#loader .lbarwrap{width:286px;height:3px;background:rgba(201,169,110,.15);border-radius:3px;overflow:hidden}
-#loader .lbar{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent2));box-shadow:0 0 12px var(--accent);transition:width .12s linear}
-.tgrid{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:34px}
-.tcard{position:relative;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:30px 28px 26px;overflow:hidden;transition:border-color .3s,transform .3s}
-.tcard:hover{border-color:rgba(201,169,110,.4);transform:translateY(-3px)}
-.tcard .quo{font-family:'Space Grotesk',serif;font-size:58px;line-height:.7;color:var(--accent);opacity:.35;height:30px}
-.tcard blockquote{font-size:16px;line-height:1.6;color:rgba(255,255,255,.9);margin:6px 0 22px;font-style:italic}
-.tcard .who{display:flex;align-items:center;gap:13px}
-.tcard .av{width:44px;height:44px;border-radius:50%;flex:none;display:grid;place-items:center;font-family:'Space Grotesk';font-weight:600;font-size:16px;color:#05050A;background:linear-gradient(135deg,var(--accent),var(--accent2))}
-.tcard .nm{font-weight:600;font-size:14px;color:#fff}
-.tcard .ro{font-family:'IBM Plex Mono';font-size:11px;letter-spacing:.04em;color:var(--muted);margin-top:3px}
-.tnote{font-family:'IBM Plex Mono';font-size:11px;letter-spacing:.04em;color:var(--muted);margin-top:18px;opacity:.7}
-@media(max-width:760px){.tgrid{grid-template-columns:1fr}}
+@keyframes quoteFade{0%{opacity:0;transform:translateY(10px)}100%{opacity:1;transform:translateY(0)}}
+@keyframes glowPulse{0%,100%{opacity:.4;transform:translate(-50%,-50%) scale(1)}50%{opacity:.75;transform:translate(-50%,-50%) scale(1.15)}}
 
-.hero-philosophy{font-family:"IBM Plex Mono";font-size:11px;color:rgba(255,255,255,.35);letter-spacing:.04em;font-style:italic;margin:0 auto 22px;max-width:560px;line-height:1.6;text-align:center}
-/* Case Studies */
-.cs-block{margin-top:14px}
-.cs-k{font-family:'IBM Plex Mono';font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);display:block;margin-bottom:4px;opacity:.85}
-.cs-block p{font-size:13.5px;line-height:1.6;color:var(--muted);margin:0}
-.cs-metric{margin-top:18px;padding-top:14px;border-top:1px solid var(--line);font-size:12.5px;color:#fff;display:flex;align-items:center;gap:8px}
-.cs-metric .dot{color:var(--accent)}
-/* Finance Notes */
-.note{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:32px;max-width:760px}
-.note-meta{font-family:'IBM Plex Mono';font-size:11px;letter-spacing:.08em;color:var(--accent);margin-bottom:12px;display:flex;gap:14px;flex-wrap:wrap}
-.note h3{font-size:22px;font-weight:700;color:#fff;margin:0 0 8px}
-.note>p{font-size:14.5px;line-height:1.7;color:var(--muted);margin:0 0 16px}
-.note ul{margin:0 0 16px;padding-left:0;list-style:none}
-.note li{position:relative;padding-left:22px;margin-bottom:10px;font-size:14px;line-height:1.6;color:var(--muted)}
-.note li:before{content:"";position:absolute;left:0;top:9px;width:7px;height:7px;border-radius:50%;background:var(--accent)}
-.note li b{color:#fff;font-weight:600}
-.note-disc{font-size:12px;color:var(--muted);opacity:.7;border-top:1px solid var(--line);padding-top:14px;margin:18px 0 0;line-height:1.6}
-@media(max-width:560px){.note{padding:24px}}
+/* Desktop: centre ring */
+@media(min-width:769px){.lring-wrap{width:320px;height:320px}.lring-svg{width:320px;height:320px}}
 
-@media(min-width:769px){
-  .llogo-svg{width:200px !important;height:200px !important}
-  #loader .lwrap{align-items:center;text-align:center}
+/* ══ ANIMATED BG CANVAS ════════════════════════════════════════════════════ */
+#bgCanvas{position:fixed;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none;display:block}
+
+
+/* ══ MY JOURNEY MODAL ═══════════════════════════════════════════════════════ */
+#journeyOverlay{position:fixed;inset:0;z-index:10000;display:flex;align-items:center;justify-content:center;background:rgba(5,5,10,.75);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);opacity:0;visibility:hidden;transition:opacity .4s,visibility .4s;padding:20px}
+#journeyOverlay.jopen{opacity:1;visibility:visible}
+#journeyOverlay.jopen #journeyModal{transform:scale(1) translateY(0);opacity:1}
+#journeyModal{background:rgba(13,13,20,.96);border:1px solid rgba(201,169,110,.25);border-radius:20px;width:95vw;max-width:1100px;max-height:92vh;overflow:hidden;position:relative;box-shadow:0 32px 80px rgba(0,0,0,.7);transform:scale(.93) translateY(28px);opacity:0;transition:transform .45s cubic-bezier(.22,1,.36,1),opacity .4s}
+.jm-header{position:sticky;top:0;z-index:2;background:rgba(13,13,20,.97);border-bottom:1px solid rgba(201,169,110,.12);padding:22px 28px 18px;display:flex;align-items:flex-start;justify-content:space-between}
+.jm-eyebrow{font-size:10px;letter-spacing:.15em;color:var(--accent2);font-weight:600;text-transform:uppercase;margin-bottom:4px}
+.jm-title{font-size:20px;font-weight:700;color:#fff;margin:0}
+.jm-subtitle{font-size:12px;color:var(--muted);margin-top:3px}
+.jclose{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.6);border-radius:50%;width:34px;height:34px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;flex-shrink:0;margin-left:14px;transition:all .2s}
+.jclose:hover{background:rgba(201,169,110,.15);border-color:rgba(201,169,110,.4);color:var(--accent2)}
+.jm-body{padding:0;height:calc(92vh - 86px)}
+#journeyFrame{width:100%;height:100%;border:none;border-radius:0 0 20px 20px;display:block;background:#0C0C10}
+
+/* ══ LOADER QUOTE ═══════════════════════════════════════════════════════════ */
+.lquote{text-align:center;margin-top:20px;animation:quoteFade .9s ease .3s both}
+#loader-quote-text{font-family:'Space Grotesk',sans-serif;font-size:clamp(14px,2vw,17px);color:rgba(255,255,255,.78);font-style:italic;text-align:center;line-height:1.75;margin:0 auto 10px;display:block;text-shadow:0 0 30px rgba(201,169,110,.25)}
+#loader-quote-auth{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--accent2);letter-spacing:.12em;opacity:.85;display:block}
+
+/* ══ LOADER SIDE PANELS ═════════════════════════════════════════════════════ */
+.l-side{position:absolute;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;width:210px}
+.l-left{left:32px}
+.l-right{right:200px}
+.l-panel{background:rgba(10,10,18,.82);border:1px solid rgba(201,169,110,.16);border-radius:12px;padding:14px 16px;backdrop-filter:blur(8px);animation:lPanelIn .7s cubic-bezier(.22,1,.36,1) both}
+@keyframes lPanelIn{from{opacity:0;transform:translateX(-20px)}to{opacity:1;transform:translateX(0)}}
+.l-right .l-panel{animation-name:lPanelInR}
+@keyframes lPanelInR{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
+
+.l-panel-hd{font-family:'IBM Plex Mono',monospace;font-size:8px;letter-spacing:.2em;color:rgba(201,169,110,.7);font-weight:600;text-transform:uppercase;display:flex;align-items:center;gap:6px;margin-bottom:10px}
+.l-panel-dot{width:5px;height:5px;border-radius:50%;background:#C9A96E;flex-shrink:0;box-shadow:0 0 6px rgba(201,169,110,.8);animation:dotPulse 2s ease infinite}
+@keyframes dotPulse{0%,100%{opacity:1}50%{opacity:.3}}
+
+/* Line chart */
+.l-linechart{width:100%;height:55px;display:block;margin-bottom:8px}
+.l-line{fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.l-line-gold{stroke:#C9A96E;filter:drop-shadow(0 0 4px rgba(201,169,110,.5))}
+.l-line-dim{stroke:rgba(201,169,110,.3);stroke-dasharray:3 4}
+.l-line-green{stroke:#3CDD78;filter:drop-shadow(0 0 4px rgba(60,221,120,.5))}
+
+/* Forex rates */
+.l-rates{display:flex;flex-direction:column;gap:4px}
+.l-rate{display:flex;justify-content:space-between;align-items:center}
+.l-rlabel{font-family:'IBM Plex Mono',monospace;font-size:9px;color:rgba(255,255,255,.45);letter-spacing:.06em}
+.l-rval{font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:600;letter-spacing:.04em}
+.l-rval.up{color:#3CDD78;text-shadow:0 0 8px rgba(60,221,120,.4)}
+.l-rval.dn{color:#F87171;text-shadow:0 0 8px rgba(248,113,113,.4)}
+
+/* Donut */
+.l-donut-row{display:flex;align-items:center;gap:14px}
+.l-donut-svg{width:64px;height:64px;flex-shrink:0}
+.l-donut-val{font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:700;color:#E8C98A;text-shadow:0 0 12px rgba(201,169,110,.5)}
+.l-donut-lbl{font-family:'IBM Plex Mono',monospace;font-size:8px;letter-spacing:.15em;color:rgba(201,169,110,.55)}
+
+/* Bar chart */
+.l-barchart{width:100%;height:55px;display:block}
+.l-bar{fill:rgba(201,169,110,.25);rx:2;animation:lBarRise .8s cubic-bezier(.22,1,.36,1) both}
+.l-bar.hi{fill:rgba(201,169,110,.6);filter:drop-shadow(0 0 4px rgba(201,169,110,.6))}
+@keyframes lBarRise{from{transform:scaleY(0);transform-origin:bottom}to{transform:scaleY(1);transform-origin:bottom}}
+
+/* Variance */
+.l-vstatus{margin-top:6px}
+.l-vs-badge{font-family:'IBM Plex Mono',monospace;font-size:8px;letter-spacing:.15em;color:#3CDD78;background:rgba(60,221,120,.08);border:1px solid rgba(60,221,120,.25);border-radius:4px;padding:3px 8px;text-shadow:0 0 8px rgba(60,221,120,.5)}
+
+/* Status list (far right) */
+.l-statuslist{position:absolute;right:28px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:18px;width:168px}
+.l-si{display:flex;align-items:flex-start;gap:10px;opacity:0;animation:lPanelInR .6s cubic-bezier(.22,1,.36,1) both}
+.l-si-icon{width:20px;height:20px;color:rgba(201,169,110,.65);flex-shrink:0;margin-top:1px}
+.l-si-title{font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:600;color:rgba(255,255,255,.8)}
+.l-si-sub{font-family:'IBM Plex Mono',monospace;font-size:9px;color:rgba(255,255,255,.35);letter-spacing:.06em;margin-top:2px}
+.l-si-prog{color:#C9A96E !important;animation:dotPulse 1.8s ease infinite}
+
+/* Hide on small screens */
+@media(max-width:1199px){.l-side,.l-statuslist{display:none}}
+
+
+/* ══ GOLD DOT CURSOR ════════════════════════════════════════════════════════ */
+html{cursor:url("data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7") 0 0,none}
+*{cursor:inherit}
+#cur-dot{
+  position:fixed;top:0;left:0;z-index:99999;pointer-events:none;
+  width:8px;height:8px;border-radius:50%;
+  background:#E8C98A;
+  box-shadow:0 0 8px 2px rgba(201,169,110,.9),0 0 20px 4px rgba(201,169,110,.45),0 0 40px 8px rgba(201,169,110,.15);
+  transform:translate(-50%,-50%);
+  transition:width .15s,height .15s,box-shadow .15s;
+  will-change:transform;
 }
+#cur-ring{
+  position:fixed;top:0;left:0;z-index:99998;pointer-events:none;
+  width:36px;height:36px;border-radius:50%;
+  border:1px solid rgba(201,169,110,.5);
+  box-shadow:0 0 10px rgba(201,169,110,.2),inset 0 0 10px rgba(201,169,110,.05);
+  transform:translate(-50%,-50%) scale(0);
+  transition:transform .3s cubic-bezier(.22,1,.36,1),opacity .3s,border-color .2s,box-shadow .2s;
+  opacity:0;
+  will-change:transform;
+}
+body.cur-h #cur-ring{
+  transform:translate(-50%,-50%) scale(1);
+  opacity:1;
+  border-color:rgba(201,169,110,.8);
+  box-shadow:0 0 14px rgba(201,169,110,.4),inset 0 0 14px rgba(201,169,110,.08);
+}
+body.cur-h #cur-dot{
+  width:6px;height:6px;
+  box-shadow:0 0 12px 4px rgba(201,169,110,1),0 0 28px 8px rgba(201,169,110,.5),0 0 50px 14px rgba(201,169,110,.2);
+}
+body.cur-c #cur-dot{
+  width:5px;height:5px;
+  background:#fff;
+  box-shadow:0 0 10px 4px rgba(255,255,255,.9),0 0 24px 8px rgba(201,169,110,.8),0 0 50px 16px rgba(201,169,110,.4);
+}
+body.cur-c #cur-ring{
+  transform:translate(-50%,-50%) scale(.55);
+  opacity:1;
+  border-width:2px;
+  border-color:rgba(232,201,138,1);
+  box-shadow:0 0 18px rgba(201,169,110,.7),inset 0 0 18px rgba(201,169,110,.15);
+}
+/* Trail */
+.cur-trail{
+  position:fixed;top:0;left:0;z-index:99997;pointer-events:none;
+  border-radius:50%;background:rgba(201,169,110,.55);
+  transform:translate(-50%,-50%);
+  animation:trailFade .5s ease forwards;
+}
+@keyframes trailFade{0%{opacity:1;transform:translate(-50%,-50%) scale(1)}100%{opacity:0;transform:translate(-50%,-50%) scale(.1)}}
+@media(max-width:768px){#cur-dot,#cur-ring{display:none}html,*{cursor:auto}}
 </style>
 </head>
 <body>
+<div id="cur-dot"></div>
+<div id="cur-ring"></div>
+
+
+<canvas id="bgCanvas" aria-hidden="true"></canvas>
+
 <div id="loader" aria-hidden="true">
+  <!-- Cinematic radial glow -->
+  <div class="l-glow-bg"></div>
+
+  <!-- Floating bar chart ambience -->
+  <div class="l-bars-bg" aria-hidden="true">
+    <span class="lb" style="height:38%;left:8%;animation-delay:0s"></span>
+    <span class="lb" style="height:55%;left:13%;animation-delay:.3s"></span>
+    <span class="lb" style="height:72%;left:18%;animation-delay:.6s"></span>
+    <span class="lb" style="height:48%;left:23%;animation-delay:.9s"></span>
+    <span class="lb" style="height:62%;left:28%;animation-delay:.2s"></span>
+    <span class="lb" style="height:85%;right:28%;animation-delay:.5s"></span>
+    <span class="lb" style="height:58%;right:23%;animation-delay:.8s"></span>
+    <span class="lb" style="height:74%;right:18%;animation-delay:.1s"></span>
+    <span class="lb" style="height:44%;right:13%;animation-delay:.4s"></span>
+    <span class="lb" style="height:66%;right:8%;animation-delay:.7s"></span>
+  </div>
+
+
+  <!-- LEFT PANELS -->
+  <div class="l-side l-left">
+
+    <div class="l-panel">
+      <div class="l-panel-hd">
+        <span class="l-panel-dot"></span>FOREX RATES
+      </div>
+      <svg class="l-linechart" viewBox="0 0 180 55" preserveAspectRatio="none">
+        <polyline class="l-line l-line-gold" points="0,45 20,38 40,42 60,28 80,32 100,18 120,22 140,14 160,20 180,10"/>
+        <polyline class="l-line l-line-dim"  points="0,52 20,48 40,50 60,44 80,46 100,40 120,38 140,35 160,37 180,30"/>
+      </svg>
+      <div class="l-rates">
+        <div class="l-rate"><span class="l-rlabel">USD/AED</span><span class="l-rval up">3.6725 ▲</span></div>
+        <div class="l-rate"><span class="l-rlabel">AED/INR</span><span class="l-rval up">23.12 ▲</span></div>
+        <div class="l-rate"><span class="l-rlabel">EUR/USD</span><span class="l-rval dn">1.0842 ▼</span></div>
+      </div>
+    </div>
+
+    <div class="l-panel" style="margin-top:14px">
+      <div class="l-panel-hd">
+        <span class="l-panel-dot"></span>BUDGET UTILISATION
+      </div>
+      <div class="l-donut-row">
+        <svg class="l-donut-svg" viewBox="0 0 80 80">
+          <circle cx="40" cy="40" r="30" fill="none" stroke="rgba(201,169,110,.12)" stroke-width="7"/>
+          <circle cx="40" cy="40" r="30" fill="none" stroke="#C9A96E" stroke-width="7"
+            stroke-dasharray="188.5" stroke-dashoffset="33"
+            stroke-linecap="round" transform="rotate(-90 40 40)"
+            style="filter:drop-shadow(0 0 6px rgba(201,169,110,.6))"/>
+        </svg>
+        <div class="l-donut-info">
+          <div class="l-donut-val">87%</div>
+          <div class="l-donut-lbl">UTILISED</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- RIGHT PANELS -->
+  <div class="l-side l-right">
+
+    <div class="l-panel">
+      <div class="l-panel-hd">
+        <span class="l-panel-dot"></span>COST ANALYSIS
+      </div>
+      <svg class="l-barchart" viewBox="0 0 180 55" preserveAspectRatio="none">
+        <rect class="l-bar" x="10"  y="35" width="14" height="20"/>
+        <rect class="l-bar" x="30"  y="22" width="14" height="33"/>
+        <rect class="l-bar" x="50"  y="28" width="14" height="27"/>
+        <rect class="l-bar" x="70"  y="12" width="14" height="43"/>
+        <rect class="l-bar hi" x="90"  y="8"  width="14" height="47"/>
+        <rect class="l-bar" x="110" y="18" width="14" height="37"/>
+        <rect class="l-bar" x="130" y="25" width="14" height="30"/>
+        <rect class="l-bar hi" x="150" y="5"  width="14" height="50"/>
+      </svg>
+    </div>
+
+    <div class="l-panel" style="margin-top:14px">
+      <div class="l-panel-hd">
+        <span class="l-panel-dot"></span>VARIANCE STATUS
+      </div>
+      <svg class="l-linechart" viewBox="0 0 180 45" preserveAspectRatio="none">
+        <polyline class="l-line l-line-green" points="0,40 30,35 60,28 80,32 100,20 130,24 160,14 180,18"/>
+      </svg>
+      <div class="l-vstatus">
+        <span class="l-vs-badge">LOW VARIANCE</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- FAR RIGHT STATUS LIST -->
+  <div class="l-statuslist">
+    <div class="l-si" style="animation-delay:.1s">
+      <svg class="l-si-icon" viewBox="0 0 20 20"><circle cx="10" cy="10" r="8" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M10 6v4l3 2" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>
+      <div><div class="l-si-title">Scanning Accounts</div><div class="l-si-sub">Real-time</div></div>
+    </div>
+    <div class="l-si" style="animation-delay:.3s">
+      <svg class="l-si-icon" viewBox="0 0 20 20"><rect x="3" y="3" width="14" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M7 10h6M10 7v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      <div><div class="l-si-title">Reconciling Entries</div><div class="l-si-sub l-si-prog">In Progress</div></div>
+    </div>
+    <div class="l-si" style="animation-delay:.5s">
+      <svg class="l-si-icon" viewBox="0 0 20 20"><path d="M4 15 L8 9 L12 12 L16 5" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <div><div class="l-si-title">Generating Reports</div><div class="l-si-sub">AI Processing</div></div>
+    </div>
+    <div class="l-si" style="animation-delay:.7s">
+      <svg class="l-si-icon" viewBox="0 0 20 20"><path d="M10 2L4 5v5c0 4.4 2.6 7.4 6 8.5C14.4 17.4 17 14.4 17 10V5z" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+      <div><div class="l-si-title">Securing Session</div><div class="l-si-sub">Encrypted</div></div>
+    </div>
+  </div>
+
   <div class="lwrap">
-    <!-- Rising H logo — 25% larger: 72→90px -->
-    <div class="llogo">
-      <svg class="llogo-svg" viewBox="0 0 64 64" width="135" height="135" aria-hidden="true">
+    <!-- Ring + Logo -->
+    <div class="lring-wrap">
+      <svg class="lring-svg" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
         <defs>
+          <linearGradient id="ringGrad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#C9A96E"/>
+            <stop offset="50%" stop-color="#E8C98A"/>
+            <stop offset="100%" stop-color="#C9A96E"/>
+          </linearGradient>
+          <filter id="ringGlow">
+            <feGaussianBlur stdDeviation="4" result="blur"/>
+            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
           <linearGradient id="lgGrad" x1="0" y1="1" x2="0" y2="0">
             <stop offset="0" stop-color="#C9A96E"/>
             <stop offset="1" stop-color="#E8C98A"/>
@@ -448,19 +692,41 @@ footer span{color:var(--accent)}
             <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
           </filter>
         </defs>
-        <rect class="lbar-l" x="18" y="20" width="8" height="28" rx="1.5" fill="url(#lgGrad)" filter="url(#lglow)"/>
-        <rect class="lbar-r" x="38" y="14" width="8" height="34" rx="1.5" fill="url(#lgGrad)" filter="url(#lglow)"/>
-        <rect class="lbar-m" x="18" y="29" width="28" height="8" fill="url(#lgGrad)" filter="url(#lglow)"/>
+        <!-- Outer decorative ring (track) -->
+        <circle class="lring-track" cx="150" cy="150" r="130"/>
+        <!-- Decorative tick marks -->
+        <g class="lring-ticks" opacity=".25">
+          <line x1="150" y1="18" x2="150" y2="28"/>
+          <line x1="150" y1="272" x2="150" y2="282"/>
+          <line x1="18" y1="150" x2="28" y2="150"/>
+          <line x1="272" y1="150" x2="282" y2="150"/>
+        </g>
+        <!-- Inner dashed ring -->
+        <circle class="lring-inner" cx="150" cy="150" r="108"/>
+        <!-- Progress ring fill -->
+        <circle class="lring-fill" id="lring" cx="150" cy="150" r="130"/>
+        <!-- Glowing tip dot — moves with progress -->
+        <circle class="lring-tip" id="lringTip" cx="150" cy="20" r="4"/>
+        <!-- H logo bars inside ring -->
+        <g transform="translate(103,103) scale(1.47)">
+          <rect class="lbar-l" x="18" y="20" width="8" height="28" rx="1.5" fill="url(#lgGrad)" filter="url(#lglow)"/>
+          <rect class="lbar-r" x="38" y="14" width="8" height="34" rx="1.5" fill="url(#lgGrad)" filter="url(#lglow)"/>
+          <rect class="lbar-m" x="18" y="29" width="28" height="8" fill="url(#lgGrad)" filter="url(#lglow)"/>
+        </g>
       </svg>
       <div class="llogo-glow"></div>
     </div>
-    <!-- Counter (paragraph) -->
+
+    <!-- Percentage -->
     <div class="lpct"><span id="lnum">0</span><span class="lpc">%</span></div>
-    <!-- Tick expressions — under paragraph -->
+
+    <!-- Tick expressions -->
     <div class="lexpr" id="lexpr">&nbsp;</div>
-    <!-- Loading bar — 30% larger: 220→286px wide, 2→3px tall -->
-    <div class="lbarwrap"><div class="lbar" id="lbar"></div></div>
-    <!-- Quote — under bar -->
+
+    <!-- Hidden bar (still needed for JS) -->
+    <div style="display:none"><div id="lbar"></div></div>
+
+    <!-- Quote -->
     <div class="lquote">
       <p id="loader-quote-text">&ldquo;I can do this all day.&rdquo;</p>
       <span id="loader-quote-auth">&mdash; Steve Rogers</span>
@@ -534,7 +800,7 @@ footer span{color:var(--accent)}
       <!-- ACTION BAR -->
       <div class="cta">
         <a href="#experience" class="btn btn-solid">View Experience</a>
-        <a href="my-journey.html" class="btn btn-ghost" target="_blank" rel="noopener" style="border-color:rgba(201,169,110,.45);color:var(--accent2)">My Journey &#x2197;</a>
+        <button class="btn btn-ghost" onclick="openJourney()" style="border-color:rgba(201,169,110,.45);color:var(--accent2)">My Journey &#x2197;</button>
         <a href="#services" class="btn btn-ghost">Services</a>
         <button class="btn btn-ghost" onclick="downloadCV()">Download CV</button>
         <a href="#contact" class="btn btn-ghost">Contact Me</a>
@@ -895,6 +1161,19 @@ footer span{color:var(--accent)}
       var pct=Math.round(p*100);
       numEl.textContent=pct;
       barEl.style.width=pct+'%';
+      // Drive progress ring
+      var ring=document.getElementById('lring');
+      var tip=document.getElementById('lringTip');
+      if(ring){
+        var circ=2*Math.PI*130;
+        ring.style.strokeDashoffset=circ*(1-p);
+        // move tip dot
+        if(tip){
+          var angle=-Math.PI/2 + p*2*Math.PI;
+          tip.setAttribute('cx', 150+130*Math.cos(angle));
+          tip.setAttribute('cy', 150+130*Math.sin(angle));
+        }
+      }
       if(now-lastSwap>70){exprEl.innerHTML=expr();lastSwap=now;}
       if(p<1){requestAnimationFrame(frame);}
       else{numEl.textContent='100';exprEl.innerHTML='= <b>100</b> \u2713';setTimeout(hide,420);}
@@ -1043,6 +1322,199 @@ footer span{color:var(--accent)}
   }
   raf=requestAnimationFrame(loop);
 })();
+
+/* ── Layered Animated Background ────────────────────────── */
+(function(){
+  var cv=document.getElementById('bgCanvas');
+  if(!cv)return;
+  var cx=cv.getContext('2d');
+  var G=function(a){return 'rgba(201,169,110,'+a+')'};
+  var C=function(a){return 'rgba(0,220,180,'+a+')'};
+  var W,H,pts=[],chartPts=[];
+
+  function resize(){
+    W=cv.width=innerWidth;H=cv.height=innerHeight;
+    pts=[];
+    var n=Math.floor(W*H/14000);
+    for(var i=0;i<n;i++) pts.push({
+      x:Math.random()*W,y:Math.random()*H,
+      vx:(Math.random()-.5)*.4,vy:(Math.random()-.5)*.4,
+      r:Math.random()*1.3+.5
+    });
+    chartPts=[];
+    var y=H*.5,x=0;
+    while(x<=W+60){
+      y+=(Math.random()-.48)*H*.022;
+      y=Math.max(H*.25,Math.min(H*.78,y));
+      chartPts.push({x:x,y:y});x+=W/100;
+    }
+  }
+
+  function drawGrid(){
+    cx.lineWidth=.8;cx.strokeStyle=G(.04);
+    for(var x=0;x<W;x+=70){cx.beginPath();cx.moveTo(x,0);cx.lineTo(x,H);cx.stroke();}
+    for(var y=0;y<H;y+=70){cx.beginPath();cx.moveTo(0,y);cx.lineTo(W,y);cx.stroke();}
+    cx.strokeStyle=G(.14);cx.lineWidth=1;
+    [[0,0,90,0],[0,0,0,90],[W,0,-90,0],[W,0,0,90],
+     [0,H,90,0],[0,H,0,-90],[W,H,-90,0],[W,H,0,-90]]
+    .forEach(function(d){cx.beginPath();cx.moveTo(d[0],d[1]);cx.lineTo(d[0]+d[2],d[1]+d[3]);cx.stroke();});
+  }
+
+  var cOff=0;
+  function drawChart(){
+    cOff+=.35;
+    cx.save();
+    cx.shadowColor=G(.3);cx.shadowBlur=10;
+    cx.beginPath();cx.strokeStyle=G(.22);cx.lineWidth=1.4;
+    chartPts.forEach(function(p,i){
+      var px=(p.x-cOff%W+W)%W;
+      var py=p.y+Math.sin(px*.007+Date.now()*.0004)*16;
+      i===0?cx.moveTo(px,py):cx.lineTo(px,py);
+    });
+    cx.stroke();
+    cx.lineTo(W,H);cx.lineTo(0,H);cx.closePath();
+    cx.fillStyle=G(.03);cx.fill();
+    cx.restore();
+  }
+
+  function drawPts(){
+    var md=130;
+    pts.forEach(function(p,i){
+      p.x+=p.vx;p.y+=p.vy;
+      if(p.x<-5)p.x=W+5;if(p.x>W+5)p.x=-5;
+      if(p.y<-5)p.y=H+5;if(p.y>H+5)p.y=-5;
+      cx.beginPath();cx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      cx.fillStyle=G(.55);cx.fill();
+      for(var j=i+1;j<pts.length;j++){
+        var q=pts[j];
+        var d=Math.hypot(p.x-q.x,p.y-q.y);
+        if(d<md){
+          cx.beginPath();cx.moveTo(p.x,p.y);cx.lineTo(q.x,q.y);
+          cx.strokeStyle=G((1-d/md)*.12);cx.lineWidth=.6;cx.stroke();
+        }
+      }
+    });
+  }
+
+  var scanY=0;
+  function drawScan(){
+    scanY=(scanY+.7)%H;
+    var g=cx.createLinearGradient(0,scanY-44,0,scanY+44);
+    g.addColorStop(0,C(0));g.addColorStop(.5,C(.04));g.addColorStop(1,C(0));
+    cx.fillStyle=g;cx.fillRect(0,scanY-44,W,88);
+  }
+
+  function drawVig(){
+    var g=cx.createRadialGradient(W/2,H/2,0,W/2,H/2,Math.max(W,H)*.72);
+    g.addColorStop(0,'rgba(5,5,10,0)');g.addColorStop(1,'rgba(5,5,10,.65)');
+    cx.fillStyle=g;cx.fillRect(0,0,W,H);
+  }
+
+  function draw(){
+    cx.clearRect(0,0,W,H);
+    drawGrid();drawChart();drawScan();drawPts();drawVig();
+    requestAnimationFrame(draw);
+  }
+
+  resize();
+  window.addEventListener('resize',resize);
+  draw();
+})();
+
+/* ── My Journey Modal ──────────────────────────────── */
+var _jTimer=null,_jScrolled=false;
+function openJourney(){
+  var ov=document.getElementById('journeyOverlay'),fr=document.getElementById('journeyFrame');
+  ov.classList.add('jopen');document.body.style.overflow='hidden';_jScrolled=false;
+  function startScroll(){
+    try{
+      var win=fr.contentWindow,doc=win.document;
+      var el=doc.scrollingElement||doc.documentElement;
+      el.scrollTop=0;
+      win.addEventListener('scroll',function(){_jScrolled=true;clearInterval(_jTimer)},{passive:true,once:true});
+      setTimeout(function(){
+        _jTimer=setInterval(function(){
+          if(_jScrolled){clearInterval(_jTimer);return;}
+          var max=el.scrollHeight-win.innerHeight;
+          if(el.scrollTop>=max-2){clearInterval(_jTimer);return;}
+          el.scrollTop+=1;
+        },20);
+      },1200);
+    }catch(e){}
+  }
+  if(fr.contentDocument&&fr.contentDocument.readyState==='complete'){startScroll();}
+  else{fr.onload=function(){setTimeout(startScroll,100);};}
+}
+function closeJourney(){
+  document.getElementById('journeyOverlay').classList.remove('jopen');
+  document.body.style.overflow='';
+  clearInterval(_jTimer);_jTimer=null;_jScrolled=false;
+  try{document.getElementById('journeyFrame').contentWindow.scrollTo(0,0);}catch(e){}
+}
+document.addEventListener('DOMContentLoaded',function(){
+  document.getElementById('journeyOverlay').addEventListener('click',function(e){if(e.target===this)closeJourney();});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')closeJourney();});
+});
+
+/* ── Gold Dot Cursor ───────────────────────────────────────── */
+(function(){
+  var dot  = document.getElementById('cur-dot');
+  var ring = document.getElementById('cur-ring');
+  if(!dot||!ring) return;
+
+  var mx=0, my=0, rx=0, ry=0;
+  var lastX=0, lastY=0, moveT;
+
+  document.addEventListener('mousemove', function(e){
+    mx=e.clientX; my=e.clientY;
+    dot.style.left=mx+'px'; dot.style.top=my+'px';
+
+    // trail every 40px moved
+    var d=Math.hypot(mx-lastX, my-lastY);
+    if(d>22){
+      var t=document.createElement('div');
+      t.className='cur-trail';
+      var sz=(Math.random()*3+2)+'px';
+      t.style.cssText='width:'+sz+';height:'+sz+';left:'+mx+'px;top:'+my+'px;';
+      document.body.appendChild(t);
+      setTimeout(function(){if(t.parentNode)t.parentNode.removeChild(t);},500);
+      lastX=mx; lastY=my;
+    }
+  });
+
+  // Ring lags behind smoothly
+  (function follow(){
+    rx+=(mx-rx)*.12; ry+=(my-ry)*.12;
+    ring.style.left=rx+'px'; ring.style.top=ry+'px';
+    requestAnimationFrame(follow);
+  })();
+
+  // Hover & click states
+  var hov='a,button,input,textarea,select,[role="button"],.btn,.kpi-float';
+  document.addEventListener('mouseover', function(e){ if(e.target.closest(hov)) document.body.classList.add('cur-h'); });
+  document.addEventListener('mouseout',  function(e){ if(e.target.closest(hov)) document.body.classList.remove('cur-h'); });
+  document.addEventListener('mousedown', function(){ document.body.classList.add('cur-c'); });
+  document.addEventListener('mouseup',   function(){ document.body.classList.remove('cur-c'); });
+  document.addEventListener('mouseleave',function(){ dot.style.opacity='0'; ring.style.opacity='0'; });
+  document.addEventListener('mouseenter',function(){ dot.style.opacity='1'; });
+})();
 </script>
+
+<!-- ══ MY JOURNEY MODAL ══════════════════════════════════════════════════════ -->
+<div id="journeyOverlay" role="dialog" aria-modal="true">
+  <div id="journeyModal">
+    <div class="jm-header">
+      <div>
+        <div class="jm-eyebrow">Career Timeline</div>
+        <div class="jm-title">My Journey</div>
+        <div class="jm-subtitle">From Kerala to the UAE — Finance &amp; Cost Control</div>
+      </div>
+      <button class="jclose" onclick="closeJourney()" aria-label="Close">&#x2715;</button>
+    </div>
+    <div class="jm-body">
+      <iframe src="my-journey.html" id="journeyFrame" title="My Journey"></iframe>
+    </div>
+  </div>
+</div>
 </body>
 </html>
