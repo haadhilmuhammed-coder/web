@@ -1288,7 +1288,7 @@ body.cur-c #cur-ring{
     </div>
     <div class="fis__scroll">
       <div class="fcard">
-        <div class="sec-label"><h3><span class="fic"><svg viewBox="0 0 24 24"><path d="M4 5h16v14H4z"/><path d="M8 9h8M8 13h8M8 17h5"/></svg></span>Latest Finance News</h3><span class="ftag" id="newsStatus">Loading</span></div>
+        <div class="sec-label"><h3><span class="fic"><svg viewBox="0 0 24 24"><path d="M4 5h16v14H4z"/><path d="M8 9h8M8 13h8M8 17h5"/></svg></span>Finance Watch</h3><span class="ftag" id="newsStatus">Loading</span></div>
         <div class="ticker"><div class="ticker__track" id="newsTrack"></div></div>
       </div>
       <div class="fcard tip">
@@ -1301,7 +1301,7 @@ body.cur-c #cur-ring{
         <div class="market" id="market"></div>
       </div>
       <div class="fcard ai">
-        <div class="sec-label"><h3><span class="fic"><svg viewBox="0 0 24 24"><path d="M12 3v3M12 18v3M3 12h3M18 12h3"/><circle cx="12" cy="12" r="4"/></svg></span>AI Business Insights</h3><span class="ftag">Daily</span></div>
+        <div class="sec-label"><h3><span class="fic"><svg viewBox="0 0 24 24"><path d="M12 3v3M12 18v3M3 12h3M18 12h3"/><circle cx="12" cy="12" r="4"/></svg></span>Market Insights</h3><span class="ftag" id="aiStatus">Live</span></div>
         <ul id="aiList">
           <li><span class="b sk" style="background:rgba(255,255,255,.1)"></span><span class="sk sk-line" style="flex:1"></span></li>
           <li><span class="b sk" style="background:rgba(255,255,255,.1)"></span><span class="sk sk-line" style="flex:1"></span></li>
@@ -1330,8 +1330,8 @@ body.cur-c #cur-ring{
   function animateNum(el,to,dec,pre){pre=pre||'';var from=parseFloat(el.dataset.v||'0');el.dataset.v=to;var t0=performance.now();(function step(now){var p=Math.min(1,(now-t0)/700),e=1-Math.pow(1-p,3);el.textContent=pre+fmt(from+(to-from)*e,dec);if(p<1)requestAnimationFrame(step);})(performance.now());}
   function tickClock(){var d=new Date();var c=$('fisClock');if(c)c.textContent=d.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})+' GST';}
   setInterval(tickClock,1000);tickClock();
-  var DEMO_NEWS=[{h:'UAE Corporate Tax: FTA clarifies free-zone qualifying income rules',d:'Today',s:'Gulf News'},{h:'Gold steadies near record as markets weigh rate-cut timing',d:'Today',s:'Reuters'},{h:'Brent crude holds above $80 on tighter supply outlook',d:'1d ago',s:'Bloomberg'},{h:'E-invoicing mandate: Peppol PINT-AE rollout timeline confirmed',d:'2d ago',s:'The National'},{h:'Dirham peg keeps UAE inflation among lowest in the region',d:'3d ago',s:'Khaleej Times'}];
-  function renderNews(items){$('newsStatus').textContent='Live';var card=function(it){return '<div class="news"><h4>'+it.h+'</h4><div class="meta"><span>'+it.d+'</span><span class="src">'+it.s+'</span></div></div>';};$('newsTrack').innerHTML=items.map(card).join('')+items.map(card).join('');}
+  var DEMO_NEWS=[{h:'UAE Corporate Tax: free-zone qualifying-income rules and the 9% threshold',t:'UAE Tax'},{h:'Gold near record highs \u2014 implications for inventory and collateral valuation',t:'Commodities'},{h:'Brent crude above $80 and what it means for GCC project pipelines',t:'Energy'},{h:'E-invoicing in the UAE: preparing for the Peppol PINT-AE rollout',t:'Compliance'},{h:'The dirham\u2019s USD peg and why UAE inflation stays among the region\u2019s lowest',t:'Macro'}];
+  function renderNews(items){$('newsStatus').textContent='Curated';var card=function(it){return '<div class="news"><h4>'+it.h+'</h4><div class="meta"><span class="src">'+it.t+'</span></div></div>';};$('newsTrack').innerHTML=items.map(card).join('')+items.map(card).join('');}
   var TIPS=[['Reconciliation','Reconcile bank statements before month-end close so timing differences surface early, not in the audit.'],['VAT','Keep VAT input and output records for at least 5 years — the FTA can request them within that window.'],['Procurement','Run a 3-way match (PO, goods-received note, invoice) before approving any supplier payment.'],['Receivables','Review aged receivables weekly and chase anything past 30 days to protect cash flow.'],['Accruals','Post accruals for goods received but not yet invoiced, or you understate expenses for the period.'],['Tax','Track deductible vs non-deductible expenses through the year — it makes corporate tax filing painless.'],['Controls','A trial balance must balance before you finalise: debits always equal credits.'],['Procurement','For purchases above your threshold, get three quotes so pricing is always defensible.'],['Provisions','Reconcile the EOSB / gratuity provision monthly so year-end holds no surprises.'],['VAT','File and pay VAT before the 28th to avoid FTA late-filing and late-payment penalties.'],['Assets','Maintain a fixed-asset register and verify assets physically at least once a year.'],['Audit','Keep a standard month-end checklist — consistency is what prevents missed entries.'],['Cash','Forecast cash 13 weeks out; it catches shortfalls while you can still act on them.'],['Payables','Match every credit note to its original invoice before adjusting the payables ledger.']];
   function renderTip(){var t=TIPS[dayIndex()%TIPS.length];$('tipCat').textContent=t[0];$('tipText').textContent=t[1];$('tipDate').textContent=new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'short'});}
   /* Sparkline generator */
@@ -1339,7 +1339,8 @@ body.cur-c #cur-ring{
   function seedHistory(k,val){if(sparkHistory[k])return;var a=[];for(var i=0;i<24;i++){var d=(Math.random()-.48)*.004*val;a.push(+(val*(1+d*(i/24))).toFixed(6));}sparkHistory[k]=a;}
   function drawSpark(canvasId,data,up){var c=document.getElementById(canvasId);if(!c)return;var ctx=c.getContext('2d');var W=c.width=c.offsetWidth||160,H=c.height=32;ctx.clearRect(0,0,W,H);var mn=Math.min.apply(null,data),mx=Math.max.apply(null,data),rng=mx-mn||1;var pts=data.map(function(v,i){return[i/(data.length-1)*W,(1-(v-mn)/rng)*(H-4)+2];});var grad=ctx.createLinearGradient(0,0,0,H);var col=up?'rgba(52,211,153,.55)':'rgba(251,113,133,.55)';var col2=up?'rgba(52,211,153,.0)':'rgba(251,113,133,.0)';grad.addColorStop(0,col);grad.addColorStop(1,col2);ctx.beginPath();ctx.moveTo(pts[0][0],H);pts.forEach(function(p){ctx.lineTo(p[0],p[1]);});ctx.lineTo(pts[pts.length-1][0],H);ctx.closePath();ctx.fillStyle=grad;ctx.fill();ctx.beginPath();ctx.moveTo(pts[0][0],pts[0][1]);pts.forEach(function(p){ctx.lineTo(p[0],p[1]);});ctx.strokeStyle=up?'rgba(52,211,153,.9)':'rgba(251,113,133,.9)';ctx.lineWidth=1.5;ctx.stroke();}
   function refreshSparks(){Object.keys(MKT).forEach(function(k){var o=MKT[k];seedHistory(k,o.val);sparkHistory[k].push(o.val);if(sparkHistory[k].length>24)sparkHistory[k].shift();drawSpark('sp_'+k,sparkHistory[k],o.chg>=0);});}
-  var MKT={aed:{name:'USD / AED',val:3.6725,chg:0.00,dec:4,pre:''},inr:{name:'AED / INR',val:23.12,chg:0.00,dec:2,pre:''},eur:{name:'EUR / USD',val:1.0842,chg:0.18,dec:4,pre:''}};
+  var MKT={aed:{name:'USD / AED',val:3.6725,chg:0.00,dec:4,pre:''},eur:{name:'EUR / USD',val:1.0842,chg:0.00,dec:4,pre:''},gbp:{name:'GBP / USD',val:1.2700,chg:0.00,dec:4,pre:''},sar:{name:'USD / SAR',val:3.7500,chg:0.00,dec:4,pre:''},inr:{name:'AED / INR',val:23.12,chg:0.00,dec:2,pre:''},btc:{name:'BTC / USD',val:0,chg:0.00,dec:0,pre:'$'}};
+  var ORDER=['aed','eur','gbp','sar','inr','btc'];
   function renderMarket(){
     var cell=function(k,o){
       var up=o.chg>=0;
@@ -1350,22 +1351,23 @@ body.cur-c #cur-ring{
         '<div class="spark-wrap"><canvas id="sp_'+k+'" height="32"></canvas></div>'+
       '</div>';
     };
-    $('market').innerHTML=cell('aed',MKT.aed)+cell('inr',MKT.inr)+cell('eur',MKT.eur);
+    $('market').innerHTML=ORDER.filter(function(k){return !(k==='btc'&&!(MKT.btc.val>0));}).map(function(k){return cell(k,MKT[k]);}).join('');
     Object.keys(MKT).forEach(function(k){var el=$('v_'+k);if(el)el.dataset.v=MKT[k].val;});
     $('mktStatus').textContent=CFG.forexUrl?'Live':'Demo';
     setTimeout(refreshSparks,60);
   }
-  function fetchForex(){return fetch(CFG.forexUrl).then(function(r){return r.json();}).then(function(j){if(j&&j.rates){var aed=j.rates.AED||3.6725,eur=1/(j.rates.EUR||0.922),inr=j.rates.INR?(j.rates.INR/aed):23.12;MKT.aed.chg=+((aed-MKT.aed.val)/MKT.aed.val*100).toFixed(2);MKT.aed.val=aed;MKT.eur.chg=+((eur-MKT.eur.val)/MKT.eur.val*100).toFixed(2);MKT.eur.val=eur;MKT.inr.chg=+((inr-MKT.inr.val)/MKT.inr.val*100).toFixed(2);MKT.inr.val=inr;}}).catch(function(){});}
-  function driftDemo(){/* no volatile assets */}
-  function refreshMarket(){driftDemo();fetchForex().then(function(){Object.keys(MKT).forEach(function(k){var el=$('v_'+k);if(el)animateNum(el,MKT[k].val,MKT[k].dec,MKT[k].pre);});renderMarket();});}
+  function fetchForex(){return fetch(CFG.forexUrl).then(function(r){return r.json();}).then(function(j){if(j&&j.rates){var R=j.rates;var aed=R.AED||3.6725,eur=1/(R.EUR||0.922),gbp=1/(R.GBP||0.79),sar=R.SAR||3.75,inr=R.INR?(R.INR/aed):23.12;function set(k,v){var o=MKT[k];o.chg=+((v-o.val)/o.val*100).toFixed(2);o.val=v;}set('aed',aed);set('eur',eur);set('gbp',gbp);set('sar',sar);set('inr',inr);}}).catch(function(){});}
+  function fetchCrypto(){return fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd&include_24hr_change=true').then(function(r){return r.json();}).then(function(j){if(j&&j.bitcoin&&j.bitcoin.usd){MKT.btc.val=j.bitcoin.usd;MKT.btc.chg=+(j.bitcoin.usd_24h_change||0).toFixed(2);}}).catch(function(){});}
+  function driftDemo(){/* no volatile demo assets */}
+  function refreshMarket(){Promise.all([fetchForex(),fetchCrypto()]).then(function(){renderMarket();renderInsights();});}
   var INSIGHTS=[['Dirham peg to USD keeps FX risk minimal for AED-based importers this week.','Gold near record levels — worth revaluing any inventory or loan collateral exposure.','Brent above $80 supports GCC project pipelines; expect steady contractor demand.'],['Watch corporate-tax provisioning now — first filings make Q4 accruals material.','Stable rates favour fixed-cost financing over floating for new capex.','Free-zone income tests tightened; confirm qualifying status before year-end.'],['Cash conversion is the quarter\u2019s lever — tighten receivables over chasing new revenue.','Energy prices firm; review fuel and logistics cost pass-through clauses.','E-invoicing readiness is now a compliance cost, not an IT project — budget for it.']];
-  function renderAI(){var set=INSIGHTS[dayIndex()%INSIGHTS.length];$('aiList').innerHTML=set.map(function(t,i){return '<li><span class="b">'+(i+1)+'</span><span>'+t+'</span></li>';}).join('');}
+  function renderInsights(){var aed=MKT.aed,inr=MKT.inr,eur=MKT.eur,btc=MKT.btc;var pc=function(o){return (o.chg>=0?'+':'')+fmt(o.chg,2)+'%';};var L=[];L.push('Dirham holds its USD peg near '+fmt(aed.val,4)+' \u2014 FX risk on USD-denominated trade stays minimal.');L.push('AED / INR at '+fmt(inr.val,2)+' ('+pc(inr)+') \u2014 '+(inr.chg>=0?'a firmer dirham is favourable for INR remittances and Indian-sourced purchases.':'a softer dirham raises the cost of INR-priced imports \u2014 budget accordingly.'));L.push('EUR / USD at '+fmt(eur.val,4)+' ('+pc(eur)+') \u2014 '+(Math.abs(eur.chg)>=0.3?'a notable move; revisit euro supplier pricing and currency exposure.':'broadly stable; no action needed on euro exposure this cycle.'));if(btc.val>0)L.push('Bitcoin at $'+fmt(btc.val,0)+' ('+pc(btc)+' 24h) \u2014 relevant only if you hold or invoice in crypto.');$('aiList').innerHTML=L.map(function(t,i){return '<li><span class="b">'+(i+1)+'</span><span>'+t+'</span></li>';}).join('');}
   function wireActions(){$('actMail').href='mailto:'+CFG.email+'?subject=Accounting%20enquiry';$('actBook').href=CFG.consultUrl;$('actCv').href='#';$('actCv').addEventListener('click',function(e){e.preventDefault();if(typeof downloadCV==='function')downloadCV();});$('actWa').href='https://wa.me/'+CFG.whatsapp+'?text=Hi%2C%20I%27d%20like%20to%20discuss%20accounting%20services';}
   var fis=$('fis'),scrim=$('fisScrim');
   $('fisToggle').addEventListener('click',function(){fis.classList.add('open');scrim.classList.add('show');});
   $('fisClose').addEventListener('click',function(){fis.classList.remove('open');scrim.classList.remove('show');});
   scrim.addEventListener('click',function(){fis.classList.remove('open');scrim.classList.remove('show');});
-  wireActions();renderTip();renderAI();renderMarket();
+  wireActions();renderTip();renderMarket();renderInsights();
   var news=DEMO_NEWS;setTimeout(function(){renderNews(news);},500);
   refreshMarket();setInterval(function(){refreshMarket();setTimeout(refreshSparks,80);},CFG.refreshMs);
 })();
