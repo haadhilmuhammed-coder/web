@@ -1536,11 +1536,14 @@ function openProject(){
   var ov=document.getElementById('projOverlay');
   ov.classList.add('popen');
   document.body.style.overflow='hidden';
-  var f=document.getElementById('projFrame'); f.src=f.src;
+  var f=document.getElementById('projFrame');
+  f.src='';
+  setTimeout(function(){ f.src='BAAB_Attendance_Showcase.html'; },30);
 }
 function closeProject(){
   document.getElementById('projOverlay').classList.remove('popen');
   document.body.style.overflow='';
+  document.getElementById('projFrame').src='';
 }
 (function(){
   document.addEventListener('DOMContentLoaded',function(){
@@ -1634,7 +1637,7 @@ function closeExperience(){
       </div>
       <button class="pm-close" onclick="closeProject()" aria-label="Close">&#x2715;</button>
     </div>
-    <iframe src="BAAB_Attendance_Showcase.html" id="projFrame" title="BAAB Attendance System Demo"></iframe>
+    <iframe src="" id="projFrame" title="BAAB Attendance System Demo"></iframe>
   </div>
 </div>
 
