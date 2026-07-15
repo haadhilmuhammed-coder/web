@@ -11,7 +11,7 @@
     --gray-600:#475569;--white:#ffffff;--green:#22c55e;--amber:#f59e0b;--red:#ef4444;
   }
   *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif;}
-  html,body{background:#0a1626;display:flex;align-items:center;justify-content:center;min-height:100vh;padding:24px;}
+  html,body{background:#0a1626;display:flex;align-items:center;justify-content:center;height:100vh;overflow:hidden;padding:0;margin:0;}
   .stage{position:relative;width:1080px;height:1080px;border-radius:22px;overflow:hidden;
     background:linear-gradient(160deg,#f4f8ff 0%,#eaf1fb 55%,#e2ecfa 100%);
     box-shadow:0 30px 90px rgba(0,0,0,.55);transform-origin:center center;}
@@ -371,6 +371,17 @@
   function play(){replay.classList.remove('show');show(0);}
   replay.addEventListener('click',function(){clearTimeout(timer);play();});
   play();
+</script>
+<script>
+(function(){
+  var stage=document.querySelector('.stage');
+  function fit(){
+    var s=Math.min(window.innerWidth/1080,window.innerHeight/1080);
+    stage.style.transform='scale('+s+')';
+  }
+  fit();
+  window.addEventListener('resize',fit);
+})();
 </script>
 </body>
 </html>
