@@ -86,6 +86,24 @@ tr:last-child td{border-bottom:0}
 .rows span:nth-child(even){text-align:right;color:#E4E4EE}
 .rows .tot{border-top:1px solid var(--line);padding-top:8px;color:#fff;font-weight:600}
 @media (max-width:700px){.rows{font-size:13.5px}.grid{grid-template-columns:1fr}.big{font-size:34px}.tool{padding:18px}}
+#pdfDoc{display:none}
+.pdfbtn{margin-top:18px}
+@media print{
+@page{size:A4;margin:16mm}
+body{background:#fff!important;color:#111}
+body:before{display:none}
+body>*{display:none!important}
+#pdfDoc{display:block!important;font-family:Inter,Arial,sans-serif;color:#111;font-size:12pt;line-height:1.5}
+#pdfDoc h1{font-family:'Space Grotesk',Arial,sans-serif;color:#05050A;font-size:20pt;margin:0 0 2pt}
+#pdfDoc .pm{color:#555;font-size:10pt;margin:0 0 14pt;border-bottom:2pt solid #C9A96E;padding-bottom:8pt}
+#pdfDoc h2{font-family:'Space Grotesk',Arial,sans-serif;color:#05050A;font-size:13pt;margin:16pt 0 6pt}
+#pdfDoc table{width:100%;border-collapse:collapse}
+#pdfDoc td{padding:5pt 6pt;border-bottom:.5pt solid #ddd;vertical-align:top}
+#pdfDoc td:last-child{text-align:right;white-space:nowrap}
+#pdfDoc tr.t td{font-weight:700;border-top:1.5pt solid #05050A;border-bottom:none;font-size:13pt}
+#pdfDoc .tot{font-size:22pt;font-weight:700;color:#05050A;margin:4pt 0}
+#pdfDoc .note{color:#555;font-size:9pt;margin-top:18pt}
+}
 </style>
 <body>
 <header class="top"><div class="in">
@@ -109,6 +127,7 @@ tr:last-child td{border-bottom:0}
 </div>
 <div class="btns"><button class="btn" id="go">Calculate</button><button class="btn ghost" id="ex">Try an example</button></div>
 <div class="res" id="res" hidden></div>
+<div id="pdfDoc" aria-hidden="true"></div>
 </div>
 
 <h2>How the calculation works</h2>
@@ -147,9 +166,32 @@ const f=n=>n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigi
 function pd(v){const [y,m,d]=v.split('-').map(Number);return new Date(Date.UTC(y,m-1,d));}
 function addY(dt,n){const y=dt.getUTCFullYear()+n,m=dt.getUTCMonth(),d=dt.getUTCDate();const r=new Date(Date.UTC(y,m,d));if(r.getUTCMonth()!==m)r.setUTCDate(0);return r;}
 const DAY=86400000;
+let last=null;
+const BTN='<button class="btn ghost pdfbtn" type="button" id="pdf">Download PDF</button>';
+const dt=v=>pd(v).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric',timeZone:'UTC'});
+function makePdf(){
+ if(!last)return;const L=last;
+ const today=new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});
+ const row=(a,b,c)=>`<tr${c?' class="t"':''}><td>${a}</td><td>${b}</td></tr>`;
+ let body=row('Joining date',dt(L.jv))+row('Last working day',dt(L.lv))+row('Last basic monthly salary','AED '+f(L.b))+row('Unpaid leave days',L.u);
+ let calcRows=row('Service period',`${L.full} yrs + ${L.left} days`)+row('Less unpaid leave',`${L.u} days`)+row('Service counted',`${L.yrs<0?'0.000':L.yrs.toFixed(3)} yrs`);
+ let total;
+ if(L.under){total='AED 0.00';calcRows+=row('Result','Not eligible: less than 1 year of continuous service');}
+ else{total='AED '+f(L.tot);calcRows+=row(`Daily wage (${f(L.b)} ÷ 30)`,f(L.daily))+row(`First 5 yrs: ${L.y1.toFixed(3)} × 21 days`,f(L.a1))+row(`After 5 yrs: ${L.y2.toFixed(3)} × 30 days`,f(L.a2))+row('Cap (24 × basic)',f(L.cap))+row('Gratuity (AED)'+(L.capped?' (capped)':''),f(L.tot),1);}
+ const pdfEl=$('pdfDoc');if(pdfEl.parentNode!==document.body)document.body.appendChild(pdfEl);
+ pdfEl.innerHTML=`<h1>UAE Gratuity Calculation</h1><p class="pm">Prepared ${today} · hadhilmuhammed.com/uae-gratuity-calculator.html · Private sector, Federal Decree-Law No. 33 of 2021</p>
+<h2>Estimated end-of-service gratuity</h2><div class="tot">${total}</div>
+<h2>Inputs</h2><table>${body}</table>
+<h2>Calculation</h2><table>${calcRows}</table>
+<p class="note">Estimate for information only, not legal advice. Final amounts depend on the employment contract and the employer's records. Does not apply to free zones with their own rules (such as DIFC and ADGM), government employees, or approved alternative end-of-service schemes. For a specific case, check with MOHRE or a qualified adviser.</p>`;
+ const t=document.title;document.title='Gratuity-Calculation-'+new Date().toISOString().slice(0,10);
+ window.print();setTimeout(()=>{document.title=t;},1000);
+}
+document.addEventListener('click',e=>{if(e.target&&e.target.id==='pdf')makePdf();});
 function calc(){
  const out=$('res');out.hidden=false;
  const jv=$('jd').value,lv=$('ld').value,b=parseFloat($('bs').value),u=parseInt($('ul').value||'0',10);
+ last=null;
  if(!jv||!lv||!(b>0)){out.innerHTML='<p class="err">Please enter both dates and the basic salary.</p>';return;}
  if(u<0){out.innerHTML='<p class="err">Unpaid leave days cannot be negative.</p>';return;}
  const j=pd(jv),l=pd(lv);
@@ -159,7 +201,7 @@ function calc(){
  const totalDays=Math.round((l.getTime()+DAY-j.getTime())/DAY);
  const yrs=full+(left-u)/365;
  const daily=b/30;
- if(yrs<1){out.innerHTML=`<div class="big"><small>AED</small>0.00</div><p class="sub">Service counted: ${yrs<0?0:yrs.toFixed(3)} years. Gratuity is payable only after at least 1 year of continuous service.</p>`;return;}
+ if(yrs<1){out.innerHTML=`<div class="big"><small>AED</small>0.00</div><p class="sub">Service counted: ${yrs<0?0:yrs.toFixed(3)} years. Gratuity is payable only after at least 1 year of continuous service.</p>`+BTN;last={jv,lv,b,u,full,left,yrs,under:true};return;}
  const y1=Math.min(yrs,5),y2=Math.max(yrs-5,0);
  const a1=y1*21*daily,a2=y2*30*daily,raw=a1+a2,cap=24*b,tot=Math.min(raw,cap);
  const r2=x=>Math.round(x*100)/100;
@@ -174,7 +216,8 @@ function calc(){
 <span>After 5 yrs: ${y2.toFixed(3)} × 30 days</span><span>${f(r2(a2))}</span>
 <span>Cap (24 × basic)</span><span>${f(cap)}</span>
 <span class="tot">Gratuity (AED)</span><span class="tot">${f(r2(tot))}</span>
-</div>`;
+</div>`+BTN;
+ last={jv,lv,b,u,full,left,yrs,daily:r2(daily),y1,y2,a1:r2(a1),a2:r2(a2),cap,capped:raw>cap,tot:r2(tot)};
 }
 $('go').addEventListener('click',calc);
 $('ex').addEventListener('click',()=>{$('jd').value='2018-01-01';$('ld').value='2025-12-31';$('bs').value='12000';$('ul').value='0';calc();});
