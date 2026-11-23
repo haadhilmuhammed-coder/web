@@ -86,6 +86,24 @@ tr:last-child td{border-bottom:0}
 .rows span:nth-child(even){text-align:right;color:#E4E4EE}
 .rows .tot{border-top:1px solid var(--line);padding-top:8px;color:#fff;font-weight:600}
 @media (max-width:700px){.rows{font-size:13.5px}.grid{grid-template-columns:1fr}.big{font-size:34px}.tool{padding:18px}}
+#pdfDoc{display:none}
+.pdfbtn{margin-top:18px}
+@media print{
+@page{size:A4;margin:16mm}
+body{background:#fff!important;color:#111}
+body:before{display:none}
+body>*{display:none!important}
+#pdfDoc{display:block!important;font-family:Inter,Arial,sans-serif;color:#111;font-size:12pt;line-height:1.5}
+#pdfDoc h1{font-family:'Space Grotesk',Arial,sans-serif;color:#05050A;font-size:20pt;margin:0 0 2pt}
+#pdfDoc .pm{color:#555;font-size:10pt;margin:0 0 14pt;border-bottom:2pt solid #C9A96E;padding-bottom:8pt}
+#pdfDoc h2{font-family:'Space Grotesk',Arial,sans-serif;color:#05050A;font-size:13pt;margin:16pt 0 6pt}
+#pdfDoc table{width:100%;border-collapse:collapse}
+#pdfDoc td{padding:5pt 6pt;border-bottom:.5pt solid #ddd;vertical-align:top}
+#pdfDoc td:last-child{text-align:right;white-space:nowrap}
+#pdfDoc tr.t td{font-weight:700;border-top:1.5pt solid #05050A;border-bottom:none;font-size:13pt}
+#pdfDoc .tot{font-size:22pt;font-weight:700;color:#05050A;margin:4pt 0}
+#pdfDoc .note{color:#555;font-size:9pt;margin-top:18pt}
+}
 </style>
 <body>
 <header class="top"><div class="in">
@@ -110,6 +128,7 @@ tr:last-child td{border-bottom:0}
 </div>
 <div class="btns"><button class="btn" id="go">Calculate</button><button class="btn ghost" id="ex">Try an example</button></div>
 <div class="res" id="res" hidden></div>
+<div id="pdfDoc" aria-hidden="true"></div>
 </div>
 
 <h2>How the calculation works</h2>
@@ -144,9 +163,29 @@ const f=n=>n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigi
 function pd(v){const [y,m,d]=v.split('-').map(Number);return new Date(Date.UTC(y,m-1,d));}
 function addM(dt,n){const t=dt.getUTCFullYear()*12+dt.getUTCMonth()+n,y=Math.floor(t/12),m=t%12,d=dt.getUTCDate();const r=new Date(Date.UTC(y,m,d));if(r.getUTCMonth()!==m)r.setUTCDate(0);return r;}
 const DAY=86400000;
+let last=null;
+const BTN='<button class="btn ghost pdfbtn" type="button" id="pdf">Download PDF</button>';
+const dt=v=>pd(v).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric',timeZone:'UTC'});
+function makePdf(){
+ if(!last)return;const L=last;
+ const today=new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});
+ const row=(a,b,c)=>`<tr${c?' class="t"':''}><td>${a}</td><td>${b}</td></tr>`;
+ const inputs=row('Joining date',dt(L.jv))+row('Last working day',dt(L.lv))+row('Basic monthly salary','AED '+f(L.b))+row('Annual leave days already taken',f(L.tk))+row('Unpaid leave days',L.u);
+ const calcRows=row('Service counted',`${L.full} yrs + ${L.left} days`)+row('Less unpaid leave',`${L.u} days (already deducted)`)+row('Leave earned: '+L.rule,f(L.earned)+' days')+row('Less leave taken',f(L.tk)+' days')+row('Leave balance'+(L.over?' (leave taken is more than leave earned)':''),f(L.bal)+' days')+row(`Daily rate (${f(L.b)} ÷ 30)`,f(L.daily))+row('Leave salary (AED)',f(L.pay),1);
+ const pdfEl=$('pdfDoc');if(pdfEl.parentNode!==document.body)document.body.appendChild(pdfEl);
+ pdfEl.innerHTML=`<h1>UAE Leave Salary Calculation</h1><p class="pm">Prepared ${today} · hadhilmuhammed.com/uae-leave-salary-calculator.html · Private sector, Federal Decree-Law No. 33 of 2021</p>
+<h2>Estimated payment for unused leave</h2><div class="tot">AED ${f(L.pay)}</div>
+<h2>Inputs</h2><table>${inputs}</table>
+<h2>Calculation</h2><table>${calcRows}</table>
+<p class="note">Estimate for information only, not legal advice. Covers unused annual leave paid at the end of employment for private-sector employees. Final amounts depend on the employment contract and the employer's leave records. Does not apply to free zones with their own rules (such as DIFC and ADGM) or to government employees. For a specific case, check with MOHRE or a qualified adviser.</p>`;
+ const t=document.title;document.title='Leave-Salary-Calculation-'+new Date().toISOString().slice(0,10);
+ window.print();setTimeout(()=>{document.title=t;},1000);
+}
+document.addEventListener('click',e=>{if(e.target&&e.target.id==='pdf')makePdf();});
 function calc(){
  const out=$('res');out.hidden=false;
  const jv=$('jd').value,lv=$('ld').value,b=parseFloat($('bs').value),tk=parseFloat($('tk').value||'0'),u=parseInt($('ul').value||'0',10);
+ last=null;
  if(!jv||!lv||!(b>0)){out.innerHTML='<p class="err">Please enter both dates and the basic salary.</p>';return;}
  if(tk<0||u<0){out.innerHTML='<p class="err">Leave days cannot be negative.</p>';return;}
  const j=pd(jv),l=pd(lv);
@@ -173,7 +212,8 @@ function calc(){
 <span>Leave balance</span><span>${f(r2(bal))} days</span>
 <span>Daily rate (${f(b)} ÷ 30)</span><span>${f(r2(daily))}</span>
 <span class="tot">Leave salary (AED)</span><span class="tot">${f(r2(pay))}</span>
-</div>`;
+</div>`+BTN;
+ last={jv,lv,b,tk,u,full,left,rule,earned:r2(earned),bal:r2(bal),daily:r2(daily),pay:r2(pay),over:earned-tk<0};
 }
 $('go').addEventListener('click',calc);
 $('ex').addEventListener('click',()=>{$('jd').value='2018-01-01';$('ld').value='2025-12-31';$('bs').value='12000';$('tk').value='220';$('ul').value='0';calc();});
